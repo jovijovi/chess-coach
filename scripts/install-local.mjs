@@ -123,6 +123,9 @@ await cp(join(authorRoot, "dist"), runtimePath, { recursive: true });
 await cp(join(authorRoot, "skills"), join(pluginPath, "skills"), {
   recursive: true,
 });
+await cp(join(authorRoot, "assets"), join(pluginPath, "assets"), {
+  recursive: true,
+});
 // Preserve the installed version prefix and advance only the supported cachebuster on updates.
 const previous = JSON.parse(
   await readFile(join(pluginPath, ".codex-plugin/plugin.json"), "utf8"),

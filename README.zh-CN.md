@@ -1,5 +1,7 @@
 # Chess Coach
 
+<img src="plugins/chess-coach/assets/logo.svg" width="112" height="112" alt="Chess Coach 标志：古金边框内，古典台座上的象牙白马棋子，带有短而直立的鬃毛" />
+
 [English](README.md) | 中文
 
 在 Codex 的应用内浏览器中与 Stockfish 下国际象棋，并在 Codex 对话中讨论真实棋局。界面支持英文和简体中文，以及拖动、点击、键盘走棋、合法落点、升变、提示、悔棋、翻转、自动保存与 PGN 导出。
@@ -100,6 +102,10 @@ React / TypeScript / Vite / react-chessboard 构建页面，Node HTTP 与 SSE �
 MCP 工具：`show_board`、`get_game`、`new_game`、`make_move`、`undo_turn`、`retry_engine`、`analyze_position`、`export_pgn`。变更操作携带 `gameId` 和 `expectedRevision`。分析的 `ply` 以半步计数，0 表示初始局面，结果包含局面版本、FEN 和合法 SAN 变化线。经过身份验证的 `GET /preferences` 和 `POST /preferences` 独立管理界面语言。
 
 插件是本机版本，未提供对话内嵌 MCP Apps、联网对战、棋盘内模型调用或公开分发流程。
+
+## 标志
+
+原创 [SVG 标志](plugins/chess-coach/assets/logo.svg) 以带有短而直立鬃毛的象牙白马棋子和罗马风格阶梯台座为主体，搭配深绿色底板与古金边框。短鬃毛沿着颈背向外竖起，毛根与颈部连成完整轮廓。简洁形状与克制的建筑细节兼顾古典气质和小尺寸辨识度。标志无需字体或外部图片，可无损缩放。插件在浅色、深色主题和输入框图标中使用同一标志。本机安装脚本将 `plugins/chess-coach/assets/` 复制到安装后的插件目录。
 
 ## 第三方组件
 

@@ -1,5 +1,7 @@
 # Chess Coach
 
+<img src="plugins/chess-coach/assets/logo.svg" width="112" height="112" alt="Chess Coach logo: an ivory knight with a short upright mane on a classical pedestal, framed in antique gold" />
+
 English | [中文](README.zh-CN.md)
 
 Play Stockfish on an interactive chessboard in Codex's in-app browser and discuss the actual position in your Codex conversation. The interface supports English and Simplified Chinese, drag-and-drop, click and keyboard moves, legal destinations, promotion, hints, undo, board flipping, automatic saves, and PGN export.
@@ -100,6 +102,10 @@ React, TypeScript, Vite, and react-chessboard provide the UI. Node HTTP/SSE serv
 MCP tools: `show_board`, `get_game`, `new_game`, `make_move`, `undo_turn`, `retry_engine`, `analyze_position`, and `export_pgn`. Mutations carry `gameId` and `expectedRevision`. Analysis uses a half-move `ply` (0 means the initial position) and returns the position version, FEN, and legal SAN variations. Authenticated `GET /preferences` and `POST /preferences` manage the UI language separately from the game.
 
 This local version does not include inline MCP Apps, online opponents, model calls inside the board, or public distribution tooling.
+
+## Logo
+
+The original [SVG logo](plugins/chess-coach/assets/logo.svg) depicts an ivory knight with a short upright mane on a Roman-inspired stepped pedestal, with an antique gold frame on deep green. Compact tufts rise directly from the back of the neck, forming a continuous silhouette. Its simple shapes and restrained architectural details remain legible at icon sizes. It scales without fonts or external images and is used for the plugin logo in both themes and the composer icon. The local installer copies `plugins/chess-coach/assets/` into the installed plugin.
 
 ## Third-party components
 
