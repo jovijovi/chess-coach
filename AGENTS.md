@@ -26,7 +26,7 @@ Use Node.js 26+ from the repository root.
 
 Use strict TypeScript, ES modules, two-space indentation, double quotes, semicolons, and Prettier. Follow camelCase functions, PascalCase types/components, lowercase filenames, and existing backend `.js` import extensions. No lint command exists.
 
-Write comments, developer explanations, diagnostics, and MCP descriptions in English. Keep UI copy in typed locale dictionaries, including errors and accessibility labels. Return stable error codes from the service. Keep `AGENTS.md` English-only for AI readers. For project changes, update `README.md` and other affected documentation, including all language editions, in the same change. Keep code-example comments English.
+Write plugin configuration, comments, developer explanations, diagnostics, and MCP descriptions in English. Keep UI copy in typed locale dictionaries, including errors and accessibility labels. Return stable error codes from the service. Keep `AGENTS.md` English-only for AI readers. For project changes, update `README.md` and other affected documentation, including all language editions, in the same change. Keep code-example comments English.
 
 ## Testing Guidelines
 

@@ -9,15 +9,15 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Chess Coach",
-    "shortDescription": "Local chess and coaching · 本地对弈与讲解",
-    "longDescription": "Play Stockfish locally with an English or Chinese board and ask Codex for coaching. 支持中英文棋盘，在本机与 Stockfish 对弈，并由 Codex 讲解局面。",
+    "shortDescription": "Local chess and coaching",
+    "longDescription": "Play Stockfish locally with an English or Chinese board and ask Codex for coaching.",
     "developerName": "jovijovi",
     "category": "Productivity",
     "capabilities": ["Interactive", "Read", "Write"],
     "defaultPrompt": [
       "Open the chessboard",
-      "打开国际象棋棋盘",
-      "Analyze my last move / 分析我刚才的走法"
+      "Continue my saved game",
+      "Analyze my last move"
     ]
   },
   "mcpServers": "./.mcp.json",
