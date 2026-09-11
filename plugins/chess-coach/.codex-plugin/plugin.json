@@ -1,0 +1,26 @@
+{
+  "name": "chess-coach",
+  "version": "0.1.0",
+  "description": "Play chess on a local interactive board with Stockfish and get position-aware coaching in Codex.",
+  "author": {
+    "name": "jovijovi",
+    "url": "https://github.com/jovijovi"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Chess Coach",
+    "shortDescription": "Local chess and coaching · 本地对弈与讲解",
+    "longDescription": "Play Stockfish locally with an English or Chinese board and ask Codex for coaching. 支持中英文棋盘，在本机与 Stockfish 对弈，并由 Codex 讲解局面。",
+    "developerName": "jovijovi",
+    "category": "Productivity",
+    "capabilities": ["Interactive", "Read", "Write"],
+    "defaultPrompt": [
+      "Open the chessboard",
+      "打开国际象棋棋盘",
+      "Analyze my last move / 分析我刚才的走法"
+    ]
+  },
+  "mcpServers": "./.mcp.json",
+  "license": "Apache-2.0",
+  "repository": "https://github.com/jovijovi/chess-coach"
+}

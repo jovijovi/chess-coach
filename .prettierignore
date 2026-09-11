@@ -1,0 +1,4 @@
+node_modules
+plugins/chess-coach/dist
+output
+package-lock.json

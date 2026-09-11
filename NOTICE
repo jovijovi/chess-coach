@@ -1,0 +1,9 @@
+Chess Coach
+Copyright 2026 jovijovi
+
+Original Chess Coach source code and documentation are licensed under the
+Apache License, Version 2.0. See LICENSE.
+
+Third-party dependencies retain their respective licenses. In particular,
+Stockfish.js and its engine assets are licensed under GPLv3 and are not
+relicensed under Apache-2.0 by this repository. See THIRD_PARTY_NOTICES.md.
