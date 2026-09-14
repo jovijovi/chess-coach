@@ -1,0 +1,20 @@
+{
+  "name": "chess-coach",
+  "interface": {
+    "displayName": "Chess Coach"
+  },
+  "plugins": [
+    {
+      "name": "chess-coach",
+      "source": {
+        "source": "local",
+        "path": "./plugins/chess-coach"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

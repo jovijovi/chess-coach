@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "chess-coach": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "./scripts/launch.mjs"
+      ],
+      "cwd": "${PLUGIN_ROOT}"
+    }
+  }
+}
