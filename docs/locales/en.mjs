@@ -25,7 +25,7 @@ export default {
     language: "Language",
     repository: "View on GitHub",
     source: "Source repository",
-    sourceNote: "Public source repository; the preview channel is available.",
+    sourceNote: "Public source repository; stable 0.2.0 is available.",
     top: "Back to the beginning",
     license: "Project license",
     thirdParty: "Third-party notices",
@@ -74,14 +74,14 @@ export default {
         {
           type: "callout",
           title: "Before you begin",
-          text: "Supports Linux x86_64 and macOS Intel/Apple Silicon. Install Node.js 26+ and make node available to Codex; the baseline is Codex CLI 0.154.0. The repository is public. Stable 0.2.0 is being prepared for promotion; the existing preview is available without GitHub authentication. Users need no compilation, project dependencies, Python, or flock.",
+          text: "Supports Linux x86_64 and macOS Intel/Apple Silicon. Install Node.js 26+ and make node available to Codex; the baseline is Codex CLI 0.154.0. Stable 0.2.0 is available without GitHub authentication. Users need no compilation, project dependencies, Python, or flock.",
         },
         {
           type: "steps",
           items: [
             {
               title: "Install the stable release",
-              text: "After stable 0.2.0 promotion, install the complete package through the native GitHub marketplace.",
+              text: "Install the complete stable package through the native GitHub marketplace.",
               code: "codex plugin marketplace add jovijovi/chess-coach --ref marketplace\ncodex plugin add chess-coach@chess-coach",
               after:
                 "The existing preview uses ref marketplace-preview and plugin ID chess-coach@chess-coach-preview. The public repository requires no GitHub authentication.",
@@ -101,6 +101,11 @@ export default {
                 "The default is White/Medium. The installed board and engine work offline; model conversation still uses the Codex service.",
             },
           ],
+        },
+        {
+          type: "callout",
+          title: "Switching from preview",
+          text: "Close chess tasks, run codex plugin remove chess-coach@chess-coach-preview, then enable chess-coach@chess-coach and start a new task. Your game remains in the shared data directory.",
         },
       ],
     },

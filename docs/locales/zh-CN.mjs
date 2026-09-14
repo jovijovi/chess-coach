@@ -25,7 +25,7 @@ export default {
     language: "语言",
     repository: "在 GitHub 查看",
     source: "源代码仓库",
-    sourceNote: "公开源码仓库 · 预览渠道现已可用。",
+    sourceNote: "公开源码仓库 · 稳定版 0.2.0 已发布。",
     top: "回到开篇",
     license: "项目许可证",
     thirdParty: "第三方声明",
@@ -73,14 +73,14 @@ export default {
         {
           type: "callout",
           title: "安装前准备",
-          text: "支持 Linux x86_64、macOS Intel 和 Apple Silicon。预装 Node.js 26+ 并确保 Codex 能找到 node；兼容性基线为 Codex CLI 0.154.0。仓库已公开，稳定版 0.2.0 正在准备渠道发布，现有预览版可匿名安装。用户无需编译、项目依赖、Python 或 flock。",
+          text: "支持 Linux x86_64、macOS Intel 和 Apple Silicon。预装 Node.js 26+ 并确保 Codex 能找到 node；兼容性基线为 Codex CLI 0.154.0。稳定版 0.2.0 已发布，无需 GitHub 认证即可安装。用户无需编译、项目依赖、Python 或 flock。",
         },
         {
           type: "steps",
           items: [
             {
               title: "安装稳定版",
-              text: "稳定版 0.2.0 完成渠道发布后，使用原生 GitHub marketplace 安装完整包。",
+              text: "通过原生 GitHub marketplace 安装完整稳定版插件包。",
               code: "codex plugin marketplace add jovijovi/chess-coach --ref marketplace\ncodex plugin add chess-coach@chess-coach",
               after:
                 "当前预览版使用 ref marketplace-preview 和插件标识 chess-coach@chess-coach-preview。公开仓库无需 GitHub 认证。",
@@ -100,6 +100,11 @@ export default {
                 "默认执白、中等难度。安装后棋盘和引擎可离线运行；模型对话仍使用 Codex 服务。",
             },
           ],
+        },
+        {
+          type: "callout",
+          title: "从预览版切换",
+          text: "先关闭下棋任务，运行 codex plugin remove chess-coach@chess-coach-preview，再启用稳定版 chess-coach@chess-coach 并新建任务。棋局保留在共享数据目录中。",
         },
       ],
     },

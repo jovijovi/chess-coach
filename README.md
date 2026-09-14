@@ -12,7 +12,7 @@ flipping, automatic saves, and PGN export.
 ## Release status and requirements
 
 The [GitHub repository](https://github.com/jovijovi/chess-coach) is public.
-**Stable 0.2.0 is being prepared for channel promotion.**
+**Stable [0.2.0](https://github.com/jovijovi/chess-coach/releases/tag/v0.2.0) is available.** Anonymous installation and offline native acceptance passed; see the [stable acceptance record](https://github.com/jovijovi/chess-coach/blob/main/release/STABLE-ACCEPTANCE.md).
 The [0.2.0-rc.2 preview](https://github.com/jovijovi/chess-coach/releases/tag/v0.2.0-rc.2) remains available; its [acceptance record](release/ACCEPTANCE.md) documents the three-platform results and verification scope. The documentation website defaults to English.
 
 Supported targets: Linux x86_64, macOS Intel, and macOS Apple Silicon. Install
@@ -27,7 +27,7 @@ Conversation with the Codex model still uses the Codex service and account.
 
 ## Install through Codex
 
-Stable-channel commands, available once v0.2.0 is promoted:
+Install the stable channel:
 
 ```bash
 codex plugin marketplace add jovijovi/chess-coach --ref marketplace
@@ -60,6 +60,8 @@ Manual stable upgrade:
 codex plugin marketplace upgrade chess-coach
 codex plugin add chess-coach@chess-coach
 ```
+
+To switch from preview to stable, close chess tasks and run `codex plugin remove chess-coach@chess-coach-preview` before enabling the stable plugin. Your saved game stays in the shared data directory.
 
 For RCs, replace both marketplace names with `chess-coach-preview`. Start a new
 Codex task after upgrading. A newer runtime cannot be overwritten by an older

@@ -10,7 +10,7 @@
 ## 发行状态与要求
 
 [GitHub 仓库](https://github.com/jovijovi/chess-coach)已公开。
-**稳定版 0.2.0 正在准备渠道发布。**
+**稳定版 [0.2.0](https://github.com/jovijovi/chess-coach/releases/tag/v0.2.0) 已发布。** 匿名安装和离线原生验收已通过，详见[稳定版验收记录](https://github.com/jovijovi/chess-coach/blob/main/release/STABLE-ACCEPTANCE.zh-CN.md)。
 [0.2.0-rc.2 预览版](https://github.com/jovijovi/chess-coach/releases/tag/v0.2.0-rc.2) 已可安装；其[验收记录](release/ACCEPTANCE.zh-CN.md)说明三平台结果及验证范围。文档网站默认英文。
 
 支持 Linux x86_64、macOS Intel 和 Apple Silicon。请预装 **Node.js 26+**，
@@ -23,7 +23,7 @@
 
 ## 通过 Codex 安装
 
-稳定版 v0.2.0 完成渠道发布后使用：
+安装稳定版：
 
 ```bash
 codex plugin marketplace add jovijovi/chess-coach --ref marketplace
@@ -54,6 +54,8 @@ Codex 打开 `show_board` 返回的地址。地址片段携带本地授权令牌
 codex plugin marketplace upgrade chess-coach
 codex plugin add chess-coach@chess-coach
 ```
+
+从预览版切换到稳定版时，先关闭下棋任务，并运行 `codex plugin remove chess-coach@chess-coach-preview`，再启用稳定版插件。棋局仍保存在共享数据目录中。
 
 RC 将两处 marketplace 名称替换为 `chess-coach-preview`。升级后新建任务。
 旧缓存不能覆盖较新的运行版本；同一版本的不同构建也会被拒绝，请增加 RC 编号，不要复用发行版本。

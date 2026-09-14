@@ -100,3 +100,5 @@ a temporary AppArmor profile, then removes it after native acceptance. See
 [Ubuntu namespace restrictions](https://documentation.ubuntu.com/security/security-features/privilege-restriction/apparmor/).
 
 Historical RC evidence: [0.2.0-rc.2 acceptance record](ACCEPTANCE.md).
+
+Stable [0.2.0 acceptance](https://github.com/jovijovi/chess-coach/blob/main/release/STABLE-ACCEPTANCE.md) includes anonymous GitHub installation and offline native verification.

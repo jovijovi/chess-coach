@@ -85,3 +85,5 @@ Ubuntu 24.04 CI 为 bwrap 的专用副本加载临时 AppArmor 配置，允许�
 原生验收后移除。参见 [Ubuntu 命名空间限制](https://documentation.ubuntu.com/security/security-features/privilege-restriction/apparmor/)。
 
 历史 RC 证据：[0.2.0-rc.2 验收记录](ACCEPTANCE.zh-CN.md)。
+
+[稳定版 0.2.0 验收](https://github.com/jovijovi/chess-coach/blob/main/release/STABLE-ACCEPTANCE.zh-CN.md)包括匿名 GitHub 安装与离线原生验证。
