@@ -76,10 +76,27 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y bubblewrap
+          sudo install -m 0755 /usr/bin/bwrap /usr/local/bin/chess-coach-bwrap
+          cat > output/chess-coach-bwrap.apparmor <<'PROFILE'
+          abi <abi/4.0>,
+          include <tunables/global>
+          profile chess-coach-acceptance /usr/local/bin/chess-coach-bwrap flags=(unconfined) {
+            userns,
+          }
+          PROFILE
+          sudo apparmor_parser -r output/chess-coach-bwrap.apparmor
+          echo "CHESS_COACH_BWRAP=/usr/local/bin/chess-coach-bwrap" >> "$GITHUB_ENV"
       - name: Native Codex installation and offline ten-round acceptance
         env:
           REPORT: output/acceptance-${{ matrix.target }}.json
         run: node scripts/run-native-acceptance.mjs "$REPORT"
+      - name: Remove the temporary Linux acceptance profile
+        if: always() && runner.os == 'Linux'
+        run: |
+          if test -f output/chess-coach-bwrap.apparmor; then
+            sudo apparmor_parser -R output/chess-coach-bwrap.apparmor
+            sudo rm -f /usr/local/bin/chess-coach-bwrap
+          fi
       - name: Check browser interactions with the same runtime
         run: |
           mkdir -p plugins/chess-coach/dist

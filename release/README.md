@@ -59,13 +59,13 @@ This requires `bwrap`; that is a test dependency, not a plugin dependency.
 
 Only after all three targets pass does CI create a **Draft Release**, attaching
 the exact archive, checksums, provenance, and three acceptance reports.
-Review those artifacts and perform private GitHub-marketplace installation.
-Then manually run **Publish verified plugin release** from `main`, with the tag.
+Review those artifacts, then manually run **Publish verified plugin release** from `main`, with the tag.
 It validates the draft, checks report/build/source identity, and advances only
 its channel: `marketplace-preview` for RCs or `marketplace` for stable versions.
 The generated commit inherits the annotated source tag's name and email.
 The workflow creates an immutable annotated `plugin-vVERSION` reference and
-publishes the Release. Channel branches contain only generated distribution
+publishes the Release. Verify private GitHub-marketplace installation from the
+promoted preview before delivering the RC acceptance report. Channel branches contain only generated distribution
 files; do not edit them manually. Stable channels reject prereleases.
 
 The public launch sequence is: private RC + acceptance report → owner confirms
@@ -86,3 +86,7 @@ a compatible immutable reference. Never overwrite a newer database with a backup
 Legacy `personal` users remove only `chess-coach@personal`, preserve a runtime
 backup, and clean the legacy runtime with the newly installed launcher before
 activation. Native uninstall leaves games and language preferences on disk.
+
+Ubuntu 24.04 CI grants user-namespace access to a dedicated copy of bwrap through
+a temporary AppArmor profile, then removes it after native acceptance. See
+[Ubuntu namespace restrictions](https://documentation.ubuntu.com/security/security-features/privilege-restriction/apparmor/).

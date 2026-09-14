@@ -327,7 +327,7 @@ export default {
             },
             {
               title: "How do I roll back intentionally?",
-              text: "Close tasks, stop the service, remove the plugin and runtime files, and remove only its catalog registration. Re-add a compatible immutable plugin-vVERSION ref; plugin-v0.2.0-rc.1 uses the preview catalog. Keep the newer database. The 0.2.0 RCs retain the existing save format.",
+              text: "Close tasks, stop the service, remove the plugin and runtime files, and remove only its catalog registration. Re-add a compatible immutable plugin-vVERSION ref; choose an existing RC ref from its Release to use the preview catalog. Keep the newer database. The 0.2.0 RCs retain the existing save format.",
             },
           ],
         },

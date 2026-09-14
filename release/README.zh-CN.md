@@ -52,12 +52,12 @@ CHESS_COACH_CODEX="$(command -v codex)" node scripts/run-native-acceptance.mjs
 ## 审核与发布
 
 三个目标全部通过后，CI 才创建 **Draft Release**，附上同一归档、校验文件、
-来源清单和三份验收报告。审核产物，并完成私有 GitHub marketplace 安装验证后，
-从 main 手动运行 **Publish verified plugin release**，传入标签。
+来源清单和三份验收报告。审核产物后，从 main 手动运行 **Publish verified plugin release**，传入标签。
 它检查 Draft、报告与构建/源码的一致性，仅更新对应渠道：RC 为
 `marketplace-preview`，稳定版为 `marketplace`。
 生成提交沿用源码标签的发布者姓名和邮箱，创建不可变的带注释
-`plugin-vVERSION` 引用并发布 Release。渠道分支只存放生成的发行内容，不手工修改。
+`plugin-vVERSION` 引用并发布 Release，再从已发布的预览目录验证私有 GitHub marketplace 安装，
+然后交付 RC 验收报告。渠道分支只存放生成的发行内容，不手工修改。
 稳定渠道拒绝预发布版本。
 
 公开顺序为：私有 RC 和验收报告 → 所有者确认公开仓库 → 稳定版 `v0.2.0`
@@ -73,3 +73,6 @@ CHESS_COACH_CODEX="$(command -v codex)" node scripts/run-native-acceptance.mjs
 
 旧 personal 用户仅卸载 `chess-coach@personal`，保留旧运行文件备份，
 使用新装插件的启动器清理旧运行目录后再激活。Codex 卸载默认保留棋局和语言偏好。
+
+Ubuntu 24.04 CI 为 bwrap 的专用副本加载临时 AppArmor 配置，允许其使用用户命名空间，
+原生验收后移除。参见 [Ubuntu 命名空间限制](https://documentation.ubuntu.com/security/security-features/privilege-restriction/apparmor/)。

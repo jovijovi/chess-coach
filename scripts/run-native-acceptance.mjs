@@ -61,7 +61,7 @@ try {
     const profile = join(work, "profile");
     await mkdir(profile);
     execFileSync(
-      "bwrap",
+      process.env.CHESS_COACH_BWRAP || "bwrap",
       [
         "--unshare-net",
         "--unshare-pid",

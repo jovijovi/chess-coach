@@ -94,7 +94,7 @@ Every promoted release has an immutable `plugin-vVERSION` Git reference. For a
 manual rollback, close tasks, stop the service, remove the installed plugin,
 clean its runtime with the selected package's launcher, and remove only that
 marketplace registration. Re-add this repository with `--ref plugin-vVERSION`
-and install the catalog's plugin. For example, `plugin-v0.2.0-rc.1` contains
+and install the catalog's plugin. Choose an existing immutable ref from its Release; RC refs contain
 `chess-coach@chess-coach-preview`. Only roll back to a version documented as
 compatible with the current save format; all 0.2.0 RCs use the existing format.
 Never restore an old database over a newer game.
@@ -195,3 +195,6 @@ Original code, documentation, and the classical knight logo use
 18.0.8 retains GPL-3.0. Packages include full dependency license texts and
 [corresponding source and build material](release/STOCKFISH-SOURCE.md), with
 pinned JS/WASM/network hashes in `release/stockfish.json`.
+
+The Linux CI runner uses a temporary AppArmor profile for its dedicated namespace
+test executable. See the release guide for runner setup.

@@ -82,7 +82,7 @@ cp -R ~/.local/share/chess-coach/runtime ~/.local/share/chess-coach/runtime-0.1-
 每版都有不可变的 `plugin-vVERSION` Git 引用。手动回退时：关闭任务、停止服务、
 卸载插件，使用所选版本包的启动器清理运行文件，只移除对应 marketplace 注册；
 然后通过 `--ref plugin-vVERSION` 重新添加仓库并安装目录中的插件。
-例如 `plugin-v0.2.0-rc.1` 提供 `chess-coach@chess-coach-preview`。
+请从对应 Release 选择已存在的不可变引用；RC 引用提供 `chess-coach@chess-coach-preview`。
 仅回退到已说明兼容当前保存格式的版本；0.2.0 各 RC 沿用现有格式。
 不要用旧数据库覆盖更新后的棋局。
 
@@ -170,3 +170,6 @@ Playwright 优先使用已安装的 Chrome，否则使用托管 Chromium；可�
 Stockfish 18.0.8 保留 GPL-3.0。插件包附带依赖许可证全文和
 [对应源码及构建材料](release/STOCKFISH-SOURCE.zh-CN.md)，
 JS、WASM 与网络文件的固定哈希见 `release/stockfish.json`。
+
+Linux CI runner 使用临时 AppArmor 配置，为专用验收程序启用命名空间。
+runner 配置详见发行指南。
