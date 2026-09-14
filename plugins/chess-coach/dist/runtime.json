@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0-rc.2",
+  "buildId": "ce3d4fd6dc2183c2ad8fdf83d7a7c30d4cd5a1e53a16da7c064fd0809f9dbc6d",
+  "protocol": 1,
+  "files": {
+    "activation.js": "150b6203334a036837de192ac08c56b7248528a3d8b2f8d697b7754c02685d73",
+    "control.js": "0ee39d0ec4fe2d3fa504075fe2f70a81481fc771e115d12ae89ebad5e6a4913e",
+    "daemon.js": "358be6c507a54da4927658ad0140eaa78d152f6d81c25c476890152bc30f41c6",
+    "engine-worker.cjs": "e8505816c69b613495a55cbe6b48cb8365102d9ee52e12e8338a7ded2ddefab0",
+    "engine/COPYING": "0b383d5a63da644f628d99c33976ea6487ed89aaa59f0b3257992deac1171e6b",
+    "engine/package.json": "fa6944a20ca5e6fbaf98fd202eb8c7004d5b4ab786e36b9ed02ee31dbe196c9f",
+    "engine/stockfish-18-lite-single.js": "5243fd9b276cab7dfe3ad1d43ab9ead73568fac76468c614242977a210c4a391",
+    "engine/stockfish-18-lite-single.wasm": "a8fbc05ec6920b56d7485826dcb02c5ffd2826bcbf751cf973046f237a9096f1",
+    "mcp.js": "4f19145ca30d1224888f9f880a291b927a797feb2cf2a1e9dbcb906ba038e8bd",
+    "package.json": "97bdd4634b90b0af1f9e2358a652ebf14faa50e56e2d65bdd3c0ac5038efd5d3",
+    "public/assets/index-1sNwxZKp.js": "0ee51c3100839c437fcf829630ed2f08043f254418e19bc2a62a15730703d63c",
+    "public/assets/index-BSrkvygo.css": "6e160a7d017fd42f7778f2cb0146f3e27f5c3169b7bd2e7d10881a31e2438a90",
+    "public/index.html": "e48b1d48bc46fa08d7e436ba899001931defb50c9b725875aa119c7e93cb2c35"
+  }
+}

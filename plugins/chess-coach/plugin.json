@@ -1,0 +1,34 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "chess-coach",
+  "version": "0.2.0-rc.2",
+  "description": "Play chess on a local interactive board with Stockfish and get position-aware coaching in Codex.",
+  "author": {
+    "name": "jovijovi",
+    "url": "https://github.com/jovijovi"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/jovijovi/chess-coach",
+  "homepage": "https://jovijovi.github.io/chess-coach/",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Chess Coach",
+        "shortDescription": "Local chess and coaching",
+        "longDescription": "Play Stockfish locally with an English or Chinese board and ask Codex for coaching.",
+        "developerName": "jovijovi",
+        "category": "Productivity",
+        "capabilities": ["Interactive", "Read", "Write"],
+        "brandColor": "#163D37",
+        "composerIcon": "./assets/logo.svg",
+        "logo": "./assets/logo.svg",
+        "logoDark": "./assets/logo.svg",
+        "defaultPrompt": [
+          "Open the chessboard",
+          "Continue my saved game",
+          "Analyze my last move"
+        ]
+      }
+    }
+  }
+}
