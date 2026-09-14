@@ -38,3 +38,13 @@ The [Pages workflow](../.github/workflows/pages.yml) runs when relevant document
 The build uses Node.js 26 and needs no dependency installation because the generator uses Node.js built-ins and local files only. Official actions are pinned to commit IDs. The build job uploads `output/docs/`; a separate job deploys it through the `github-pages` environment with Pages and OIDC permissions. Local preview commands do not deploy anything.
 
 Keep the source repository private. The published static handbook is publicly accessible. See [Using custom workflows with GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages) for the official deployment model.
+
+## Plugin release content
+
+Keep the private RC and future stable installation commands distinct. The
+handbook documents native marketplace installation, manual upgrades, personal
+migration, data-preserving removal, and immutable-reference rollback in both
+languages. Plugin release workflows are independent of Pages: annotated tags
+prepare drafts; manual promotion updates a channel. See the
+[release guide](../release/README.md). Repository visibility remains a separate
+owner decision, even when the public documentation describes these commands.

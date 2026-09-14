@@ -1,6 +1,6 @@
 {
   "name": "chess-coach",
-  "version": "0.1.0",
+  "version": "0.2.0-rc.1",
   "description": "Play chess on a local interactive board with Stockfish and get position-aware coaching in Codex.",
   "author": {
     "name": "jovijovi",
@@ -13,7 +13,11 @@
     "longDescription": "Play Stockfish locally with an English or Chinese board and ask Codex for coaching.",
     "developerName": "jovijovi",
     "category": "Productivity",
-    "capabilities": ["Interactive", "Read", "Write"],
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
     "brandColor": "#163D37",
     "composerIcon": "./assets/logo.svg",
     "logo": "./assets/logo.svg",

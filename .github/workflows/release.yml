@@ -1,0 +1,123 @@
+name: Prepare plugin release
+on:
+  push:
+    tags: ["v0.2.0", "v0.2.0-rc.*"]
+permissions:
+  contents: read
+concurrency:
+  group: plugin-release-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "26"
+          package-manager-cache: false
+      - run: npm ci
+      - name: Validate annotated source tag and publisher
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          mkdir -p output
+          node scripts/release-metadata.mjs "$TAG"
+      - run: npx playwright install --with-deps chromium
+      - name: Check and package
+        env:
+          CHESS_COACH_RELEASE: "1"
+        run: npm run check
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: plugin-package
+          path: |
+            output/release/*.tar.gz
+            output/release/SHA256SUMS
+            output/release/sources.json
+          if-no-files-found: error
+          retention-days: 30
+  native:
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            target: linux-x64
+          - runner: macos-15-intel
+            target: darwin-x64
+          - runner: macos-15
+            target: darwin-arm64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "26"
+          package-manager-cache: false
+      - run: npm ci
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: plugin-package
+          path: output/release
+      - name: Verify and extract the exact release package
+        run: |
+          node scripts/verify-archive.mjs output/release
+      - name: Prepare Linux isolation
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bubblewrap
+      - name: Native Codex installation and offline ten-round acceptance
+        env:
+          REPORT: output/acceptance-${{ matrix.target }}.json
+        run: node scripts/run-native-acceptance.mjs "$REPORT"
+      - name: Check browser interactions with the same runtime
+        run: |
+          mkdir -p plugins/chess-coach/dist
+          cp -R output/release/marketplace/plugins/chess-coach/dist/. plugins/chess-coach/dist/
+          npx playwright install --with-deps chromium
+          npm run test:browser
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "22"
+          package-manager-cache: false
+      - name: Verify the unsupported Node diagnostic
+        run: |
+          node scripts/check-old-node.mjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: acceptance-${{ matrix.target }}
+          path: output/acceptance-${{ matrix.target }}.json
+          if-no-files-found: error
+          retention-days: 30
+  draft:
+    needs: [build, native]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "26"
+          package-manager-cache: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          path: output/release
+          merge-multiple: true
+      - name: Seal acceptance records and create a draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: node scripts/draft-release.mjs "$TAG"

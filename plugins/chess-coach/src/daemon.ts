@@ -4,6 +4,8 @@ import { join, resolve, extname } from "node:path";
 import { randomBytes, timingSafeEqual } from "node:crypto";
 import { ZodError, z } from "zod";
 import { Preferences } from "./preferences.js";
+import { acquireLock, LockBusyError } from "./locks.js";
+import { readManifest } from "./integrity.js";
 import { Store } from "./store.js";
 import { GameService } from "./game.js";
 import { GameError } from "./types.js";
@@ -15,6 +17,8 @@ import {
   infoPath,
   buildId,
   boardUrl,
+  readInfo,
+  serviceLock,
   type RuntimeInfo,
 } from "./runtime.js";
 
@@ -23,6 +27,7 @@ let preferences: Preferences;
 const clients = new Set<ServerResponse>();
 let info: RuntimeInfo;
 let stopping = false;
+let releaseService: (() => void) | undefined;
 const root = join(distDir, "public");
 const sendJson = (res: ServerResponse, status: number, value: unknown) => {
   res.writeHead(status, {
@@ -76,7 +81,11 @@ const server = createServer(async (req, res) => {
       if (url.pathname === "/preferences" && req.method === "GET")
         return sendJson(res, 200, { locale: preferences.locale });
       if (url.pathname === "/health" && req.method === "GET")
-        return sendJson(res, 200, { pid: process.pid, buildId: info.buildId });
+        return sendJson(res, 200, {
+          pid: process.pid,
+          buildId: info.buildId,
+          version: info.version,
+        });
       if (url.pathname === "/events" && req.method === "GET") {
         res.writeHead(200, {
           "Content-Type": "text/event-stream",
@@ -214,10 +223,15 @@ async function shutdown() {
   clients.forEach((res) => res.end());
   server.close();
   server.closeAllConnections();
-  await rm(infoPath, { force: true });
-  process.exit(0);
+  const saved = await readInfo();
+  if (info && saved?.pid === process.pid && saved.token === info.token)
+    await rm(infoPath, { force: true });
+  releaseService?.();
+  process.exit(process.exitCode ?? 0);
 }
 try {
+  process.umask(0o077);
+  releaseService = await acquireLock(serviceLock, 0);
   game = new GameService(
     new Store(join(dataDir, "state.db")),
     new StockfishEngine(),
@@ -238,6 +252,7 @@ try {
     port: address.port,
     token: randomBytes(32).toString("hex"),
     buildId: await buildId(),
+    version: (await readManifest(distDir)).version,
     protocol: 1,
   };
   await writeFile(infoPath + ".tmp", JSON.stringify(info), { mode: 0o600 });
@@ -246,6 +261,8 @@ try {
   process.on("SIGINT", () => void shutdown());
   game.start();
 } catch (error) {
+  if (error instanceof LockBusyError) process.exit(0);
   console.error(error);
+  process.exitCode = 1;
   await shutdown();
 }

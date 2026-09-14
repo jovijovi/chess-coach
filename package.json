@@ -1,6 +1,6 @@
 {
   "name": "chess-coach-workspace",
-  "version": "0.1.0",
+  "version": "0.2.0-rc.1",
   "private": true,
   "type": "module",
   "engines": {
@@ -12,13 +12,16 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:browser": "playwright test",
-    "check": "npm run typecheck && npm run build && npm run docs:build && npm test && npm run test:browser",
+    "check": "npm run typecheck && npm run package && npm run docs:build && npm test && npm run test:browser",
     "docs:build": "node scripts/build-docs.mjs",
     "docs:preview": "npm run docs:build && vite preview --config docs/vite.config.mjs",
     "install:local": "node scripts/install-local.mjs",
     "stop": "node plugins/chess-coach/dist/control.js stop",
     "open": "node plugins/chess-coach/dist/control.js open",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "package": "node scripts/package.mjs",
+    "doctor": "node plugins/chess-coach/dist/control.js doctor",
+    "clean:runtime": "node plugins/chess-coach/dist/control.js clean-runtime"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.30.0",

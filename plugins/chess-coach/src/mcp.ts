@@ -2,7 +2,8 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { operations } from "./operations.js";
 import { callService } from "./runtime.js";
-const server = new McpServer({ name: "chess-coach", version: "0.1.0" });
+import { version } from "../../../package.json";
+const server = new McpServer({ name: "chess-coach", version });
 for (const [name, definition] of Object.entries(operations)) {
   const readOnly = [
     "show_board",

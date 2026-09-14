@@ -25,3 +25,12 @@ Stockfish.js 18.0.8 是 Stockfish 18 的 WASM 实现，版权归 Chess.com, LLC 
 仓库跟踪源码和依赖声明，排除 `node_modules/`、生成的引擎二进制和 `dist/`。本机构建时通过锁定的 npm 依赖获取引擎。Apache 许可证不替代引擎的 GPLv3 条款。如果分发构建后的引擎资源，应保留适用声明，并按照上游许可证要求提供与具体二进制对应的源码。参见 [Stockfish 分发说明](https://stockfishchess.org/about/)。
 
 根目录的 `LICENSE` 和 `NOTICE` 说明项目原创部分的许可证与署名，不替代第三方许可证。
+
+## 0.2.0 完整插件包
+
+`npm run package` 将锁定的生产依赖及其传递依赖的许可证和声明全文放入
+`licenses/dependencies/`，并在 `sources.json` 记录版本和完整性信息。
+`licenses/stockfish/` 包含精确 Stockfish 提交的源码归档、NNUE 网络和中英文构建说明。
+打包前检查二进制、源码和网络的固定哈希，并将网络与分发 WASM 的重建内存比较。
+详见[对应源码说明](release/STOCKFISH-SOURCE.zh-CN.md)。其中的开发工具要求仅用于
+重新构建引擎，运行插件不需要这些工具。

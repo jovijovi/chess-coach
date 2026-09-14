@@ -1,4 +1,5 @@
 import { defineConfig } from "@playwright/test";
+import { existsSync } from "node:fs";
 export default defineConfig({
   testDir: "./tests/browser",
   workers: 1,
@@ -10,7 +11,10 @@ export default defineConfig({
     trace: "retain-on-failure",
     launchOptions: {
       executablePath:
-        process.env.CHESS_COACH_CHROME || "/opt/google/chrome/chrome",
+        process.env.CHESS_COACH_CHROME ||
+        (existsSync("/opt/google/chrome/chrome")
+          ? "/opt/google/chrome/chrome"
+          : undefined),
       args: ["--no-sandbox"],
     },
   },

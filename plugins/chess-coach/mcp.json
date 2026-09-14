@@ -1,11 +1,10 @@
 {
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
   "mcpServers": {
     "chess-coach": {
       "type": "stdio",
       "command": "node",
-      "args": [
-        "./scripts/launch.mjs"
-      ],
+      "args": ["./scripts/launch.mjs"],
       "cwd": "${PLUGIN_ROOT}"
     }
   }

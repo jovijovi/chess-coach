@@ -36,3 +36,17 @@ Only the current game is retained. `export_pgn` returns its exact PGN, filename,
 ## UI language
 
 The board supports English and Simplified Chinese through its language selector. The choice is saved separately from the game and survives service restarts. Switching UI language changes neither the position nor PGN. Use the conversation language for coaching even when it differs from the board language.
+
+## Installation and recovery
+
+This release uses a local stdio MCP launched by Node.js 26+ from a complete
+Codex-managed package. Linux x64 and macOS x64/arm64 share the same game-data
+location, `~/.local/share/chess-coach/`. No remote MCP or separate API key is used.
+
+For installation, manual upgrades, personal-plugin migration, removal, or an
+older-Node diagnostic, read the package's [English guide](../../README.md) or
+[Chinese guide](../../README.zh-CN.md). Use the user's language when explaining
+those steps. Native `codex plugin add` prints the installed package path;
+`scripts/launch.mjs doctor` there reports version, integrity, and service status.
+After upgrades, start a new task. Keep the game database and language preference
+when cleaning runtime files; close old chess tasks before intentional rollback.

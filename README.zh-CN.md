@@ -1,129 +1,172 @@
 # Chess Coach
 
-<img src="plugins/chess-coach/assets/logo.svg" width="112" height="112" alt="Chess Coach 标志：古金边框内，古典台座上的象牙白马棋子，带有短而直立的鬃毛" />
+<img src="plugins/chess-coach/assets/logo.svg" width="112" height="112" alt="Chess Coach：直立鬃毛的象牙白马棋子，饰以古金色边框" />
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文 · [使用手册](https://jovijovi.github.io/chess-coach/zh-CN/)
 
-在 Codex 的应用内浏览器中与 Stockfish 下国际象棋，并在 Codex 对话中讨论真实棋局。界面支持英文和简体中文，以及拖动、点击、键盘走棋、合法落点、升变、提示、悔棋、翻转、自动保存与 PGN 导出。
+在 Codex 应用内浏览器的交互棋盘上与 Stockfish 对弈，并在对话中讨论真实局面。
+中英文 UI 支持拖动、点击、键盘走棋、合法落点、升变、提示、悔棋、翻转棋盘、自动保存和 PGN 导出。
 
-## 仓库与许可证
+## 发行状态与要求
 
-项目维护于私有 GitHub 仓库 [jovijovi/chess-coach](https://github.com/jovijovi/chess-coach)，访问需要 GitHub 授权。项目原创代码和文档采用 [Apache License, Version 2.0](LICENSE)，署名信息见 [NOTICE](NOTICE)，依赖许可证见 [第三方声明](THIRD_PARTY_NOTICES.zh-CN.md)。Stockfish 仍采用 GPLv3。
+**0.2.0 正在进行私有 RC 内测。** 获得项目所有者确认前，仓库保持私有。
+文档网站公开访问，默认英文。下文稳定版命令在正式版本发布后生效。
 
-可通过 GitHub CLI 获取已授权的仓库副本：
+支持 Linux x86_64、macOS Intel 和 Apple Silicon。请预装 **Node.js 26+**，
+确保 Codex 能找到 `node`；兼容性基线为 **Codex CLI 0.154.0**。
+本版不支持 Windows、Linux ARM、远程 MCP、自动升级、npm 发布或官方目录上架。
+
+用户安装的是完整插件包，无需编译、项目依赖、Python、`flock` 或额外安装脚本。
+安装时需要联网；安装后的棋盘、MCP、规则、引擎和保存均可离线在本机运行。
+与 Codex 模型的对话仍依赖 Codex 服务和账户。
+
+## 通过 Codex 安装
+
+私有 RC 发布后，获得仓库访问授权的测试者使用：
 
 ```bash
+# Authenticate Git for the private repository if necessary.
 gh auth login
-gh repo clone jovijovi/chess-coach
-cd chess-coach
+gh auth setup-git
+codex plugin marketplace add jovijovi/chess-coach --ref marketplace-preview
+codex plugin add chess-coach@chess-coach-preview
 ```
 
-## 文档网站
-
-在线阅读 [英文手册](https://jovijovi.github.io/chess-coach/) 或 [简体中文手册](https://jovijovi.github.io/chess-coach/zh-CN/)。网站默认语言为英文。
-
-`docs/` 中的双语手册采用象牙白、深绿与古金色，搭配项目的马棋子标志。页面提供章节目录、本地全文搜索、命令和提示词复制、响应式布局，以及完整的 MCP 工具指南。
+正式版本发布后使用：
 
 ```bash
-npm run docs:build    # Generate the static site in output/docs
-npm run docs:preview  # Rebuild and preview at http://127.0.0.1:4174
+codex plugin marketplace add jovijovi/chess-coach --ref marketplace
+codex plugin add chess-coach@chess-coach
 ```
 
-英文入口为 `/`，简体中文入口为 `/zh-CN/`；语言切换会保留当前章节。预览命令在启动时重新构建，编辑后运行 `npm run docs:build` 并刷新即可。所有页面资源都来自本地，文档不会访问你的棋局服务。维护方式见 [站点维护指南](docs/README.zh-CN.md)。
+新建 **Codex 任务**，说“打开棋盘”“继续上一局”或“解释上一步”。
+Codex 打开 `show_board` 返回的地址。地址片段携带本地授权令牌，须保持完整，避免写入共享日志。
 
-[Pages 工作流](.github/workflows/pages.yml) 在相关变更推送到 `main` 后构建并发布 `output/docs/`，也支持从 GitHub Actions 手动运行。网站在 `/chess-coach/` 下使用相对路径和 `.nojekyll`。文档网站公开访问，源代码仓库保持私有。部署细节见 [站点维护指南](docs/README.zh-CN.md)。
+插件包包含 portable `plugin.json`、`mcp.json`、兼容清单
+`.codex-plugin/plugin.json` 和全部运行资源。注册和缓存由 Codex 管理；
+启动器校验资源后准备稳定运行目录，不会下载引擎。
 
-## 本机安装
+## 升级、迁移与卸载
 
-目标环境：Linux x86_64、Node.js 26、npm、`/usr/bin/flock`，以及已安装 Codex 的 `plugin-creator` 系统技能。安装脚本默认使用带 PyYAML 的 `/usr/bin/python3`；其他解释器可通过 `CHESS_COACH_PYTHON` 指定。
+手动升级稳定版：
+
+```bash
+codex plugin marketplace upgrade chess-coach
+codex plugin add chess-coach@chess-coach
+```
+
+RC 将两处 marketplace 名称替换为 `chess-coach-preview`。升级后新建任务。
+旧缓存不能覆盖较新的运行版本；同一版本的不同构建也会被拒绝，请增加 RC 编号，不要复用发行版本。
+
+**从 `chess-coach@personal` 一次性迁移：** 关闭旧的下棋任务，停止旧服务，
+仅卸载这个插件。下列命令保留棋局、语言偏好及其他 personal marketplace 条目。
+
+```bash
+node ~/.local/share/chess-coach/runtime/control.js stop
+codex plugin remove chess-coach@personal
+# Preserve a copy of the legacy runtime if a migration rollback may be needed.
+cp -R ~/.local/share/chess-coach/runtime ~/.local/share/chess-coach/runtime-0.1-backup
+```
+
+通过 Codex 安装预览版。首次打开棋盘前，使用 `codex plugin add` 打印的
+插件绝对路径，执行 `node <installed-plugin>/scripts/launch.mjs clean-runtime`，
+然后新建任务。启动器不会默默替换无法识别的旧运行目录；新版本能够读取现有棋谱格式。
+迁移验证完成前保留旧运行文件备份。
+
+正常卸载时，先关闭下棋任务并停止服务，再运行
+`codex plugin remove chess-coach@chess-coach`，或对应的 preview/local 标识。
+卸载默认保留棋局与语言。若还需清理运行文件，在卸载前运行
+`node ~/.local/share/chess-coach/runtime/control.js clean-runtime`；
+该命令保留 `state.db` 与 `preferences.json`。
+
+每版都有不可变的 `plugin-vVERSION` Git 引用。手动回退时：关闭任务、停止服务、
+卸载插件，使用所选版本包的启动器清理运行文件，只移除对应 marketplace 注册；
+然后通过 `--ref plugin-vVERSION` 重新添加仓库并安装目录中的插件。
+例如 `plugin-v0.2.0-rc.1` 提供 `chess-coach@chess-coach-preview`。
+仅回退到已说明兼容当前保存格式的版本；0.2.0 各 RC 沿用现有格式。
+不要用旧数据库覆盖更新后的棋局。
+
+## 本地数据与恢复
+
+三个平台统一使用 `~/.local/share/chess-coach/`：
+
+| 路径                                    | 用途                     |
+| --------------------------------------- | ------------------------ |
+| `state.db`                              | 当前一局，含完整走棋历史 |
+| `preferences.json`                      | UI 语言选择              |
+| `runtime/`                              | 已校验的运行文件         |
+| `activation-lock.db`、`service-lock.db` | 独立 SQLite 进程锁       |
+| `server.json`、`service.log`            | 私有服务元数据和诊断日志 |
+
+激活锁和服务锁采用 Node 内置 SQLite，进程崩溃后由系统释放，不占用棋局数据库。
+升级先暂存并校验文件，再停止旧服务、切换目录并检查健康状态；失败恢复旧运行文件，
+不会回退或删除棋局。切换中断时，下一次启动会恢复。
+
+```bash
+node ~/.local/share/chess-coach/runtime/control.js doctor
+node ~/.local/share/chess-coach/runtime/control.js stop
+```
+
+`doctor` 显示路径、平台、版本、构建标识、完整性和服务状态，不输出令牌。
+直接运行 CLI 或测试时，可用 `CHESS_COACH_DATA_DIR` 隔离数据。
+Codex 可能过滤继承的环境变量；使用自定义目录时，应在 MCP 环境配置中显式设置此变量，
+并让所有任务及控制命令保持一致。
+
+引擎失败时，用户走棋仍已保存，可使用“重试”。服务重启后请让 Codex 重新打开棋盘。
+SSE 重连获取完整状态。数据库损坏会报错，不会静默开始新局；检查 `service.log`。
+请勿提交或发布数据库、令牌、偏好或日志。
+
+## 语言与对局行为
+
+UI 优先采用浏览器支持的语言，默认回退到英文；可手动选择英文或简体中文。
+选择在刷新和重启后保留，不影响局面或 PGN。Codex 根据对话语言讲解。
+源码注释、诊断、MCP 描述和插件配置使用英文。项目变化时，同步更新 README、网站
+和其他受影响文档的全部语言版本；`AGENTS.md` 仅保留英文。
+
+默认执白、中等难度。简单/中等/困难采用 Skill Level 0/5/10 和
+200/500/1000 毫秒搜索预算，不代表校准等级分。提示采用独立分析设置。
+分数以白方视角显示，将杀距离与厘兵分开。悔棋撤销上次用户走棋及引擎应手，
+或取消尚未完成的应手；执黑时保留引擎第一步。
+休闲模式自动按三次重复和五十回合条件判和。替换唯一保存槽前可导出 PGN。
+
+八个共享 MCP 工具：`show_board`、`get_game`、`new_game`、`make_move`、
+`undo_turn`、`retry_engine`、`analyze_position`、`export_pgn`。
+修改操作及分析保持现有 `gameId`/`expectedRevision` 参数契约。
+分析返回 FEN、版本、半步编号 `ply` 和合法变化线，便于明确讲解对应的局面。
+服务仅监听 `127.0.0.1`，校验令牌、请求来源及过期版本。
+
+## 开发与发行
 
 ```bash
 npm ci
-npm run build
+npm run dev                    # Isolated game in output/dev-data; no hot reload
+npm run build                  # Frontend, backend, and pinned engine
+npm run package                # Complete marketplace, archive, SHA256SUMS, sources.json
+npm run typecheck
+npm test                       # Build the package first for installation tests
+npm run test:browser            # Chromium interactions in both languages
+npm run check                  # Typecheck, package, docs, Vitest, and Playwright
 npm run install:local -- --dry-run
-npm run install:local
+npm run install:local          # Native Codex install in chess-coach-local
+npm run docs:build             # Default English site; Chinese at /zh-CN/
+npm run docs:preview           # Local preview at http://127.0.0.1:4174
 ```
 
-安装会将插件加入个人 marketplace，并执行 `codex plugin add`。默认个人 marketplace 无需另行添加。然后**新建 Codex 任务**并输入：
+Playwright 优先使用已安装的 Chrome，否则使用托管 Chromium；可通过
+`CHESS_COACH_CHROME` 覆盖路径。测试需要子进程与本地回环网络。
+`npm run package` 首次获取固定的对应源码材料并缓存在 `output/vendor/`，
+任何校验失败都会阻止打包。生成物、依赖和个人数据不提交到源码分支。
 
-> 打开国际象棋棋盘。
+[发行指南](release/README.zh-CN.md) 说明带注释的标签、三平台验收、Draft Release、
+手动渠道发布、不可变引用和公开访问确认步骤。main 推送可能更新
+[GitHub Pages](.github/workflows/pages.yml)，但**不会发布插件版本**。
+人工提交和标签使用仓库本地 Git 身份；流水线生成的提交继承发行标签的发布者身份。
+贡献约定见 [AGENTS.md](AGENTS.md)。
 
-插件的 MCP 启动器自动启动本地服务，Codex 打开返回的浏览器地址；无需运行 Vite 或手动启动后台服务。页面地址中的令牌仅用于访问本机棋局。
+## 许可证与图标
 
-- “继续上一盘棋”：恢复唯一的当前棋局。
-- “马走到 f3”：Codex 根据合法走法执行，并由引擎自动应手。
-- “解释一下我刚才那步”：Codex 分析对应局面；讲解发生在对话中。
-- “给我提示”：棋盘直接显示 Stockfish 建议走法和变化线。
-
-首次获取依赖需要联网。安装完成后的棋盘、规则、引擎和保存完全在本机运行；Codex 对话仍使用你的 Codex 账户。插件不需要单独的 OpenAI API Key。
-
-## 多语言
-
-首次使用时，界面选择浏览器语言列表中第一个受支持的语言：`en` 或 `zh-CN`。各种中文语言标识均使用简体中文；不支持的语言回退为英文。可随时通过语言菜单切换，按钮、弹窗、状态、错误提示、无障碍标签和页面标题都会同步更新。
-
-手动选择会单独写入 `preferences.json`，刷新或服务重启后仍保留，即使本地端口发生变化。切换语言不修改棋局、状态版本或 PGN。新页面采用保存的偏好；已经打开的其他页面保持原语言，直到主动切换或刷新。Codex 按你请求的语言讲解棋局。
-
-界面译文集中在 `plugins/chess-coach/ui/locales/`，两种语言必须保持完整。代码注释、源文件中的开发者说明、MCP 工具描述、诊断信息和命令行输出使用英文；UI 根据稳定的错误码显示对应语言。插件配置文件统一使用英文，包括清单中的描述和默认提示。棋盘 UI 继续支持英文和中文。
-
-本 README 和 [第三方声明](THIRD_PARTY_NOTICES.zh-CN.md) 提供英文和中文版本。现有的 [插件技能指南](plugins/chess-coach/skills/chess-coach/SKILL.md) 使用英文。法律文本 `LICENSE` 和 `NOTICE` 保留英文。[AGENTS.md](AGENTS.md) 是供 AI 阅读的指南，仅保留英文。项目发生变更时，应在同一次变更中同步更新本 README 和其他受影响的文档，包括所有语言版本，确保功能说明、命令、配置和示例与实现一致。生成的验收记录属于历史产物，不作为维护文档翻译。
-
-## 对局约定
-
-默认执白、中等难度；难度是 Skill Level 0 / 5 / 10，搜索预算 200 / 500 / 1000 ms，不表示经校准的等级分。提示采用更强的独立分析设置，评价值统一为白方视角，正数利白。将杀距离与普通局面分数分开显示。
-
-悔棋退回到你的上一回合走棋之前：引擎已应手时撤销双方各一步，正在思考时取消引擎并撤销你的那步。执黑时保留引擎的首步。
-
-保存槽只有一个。新开局前可以导出旧棋谱；替换后不提供历史棋局列表。本版为不限时休闲对局，三次重复和五十回合条件自动判和，区别于需要主动申和的比赛流程。
-
-## 开发与检查
-
-```bash
-npm run dev           # Build an isolated game in output/dev-data and print its URL
-npm run typecheck     # Check TypeScript
-npm run build         # Prepare bundles before integration tests
-npm test              # Run rules, engine, MCP, localization, and installation tests
-npm run test:browser  # Exercise both UI languages in Chromium
-npm run check         # Run all checks in dependency order
-```
-
-测试需要能启动子进程和监听 `127.0.0.1`。受限制的沙箱可能阻止这两项能力，须在允许本地进程和回环网络的环境运行。Playwright 默认使用 `/opt/google/chrome/chrome`，可用 `CHESS_COACH_CHROME` 指定其他 Chromium。截图位于 `output/playwright/`。
-
-`npm test` 中的 MCP 与安装测试使用已构建产物，因此先运行 `npm run build`。开发命令每次执行重新构建，不使用热更新。
-
-## 数据、启动与更新
-
-- 当前棋局：`~/.local/share/chess-coach/state.db`，SQLite 保存完整走棋历史。
-- 语言偏好：`~/.local/share/chess-coach/preferences.json`。
-- 稳定运行目录：`~/.local/share/chess-coach/runtime/`。
-- 个人插件源：`~/plugins/chess-coach/`；Codex 缓存中的插件引用稳定运行目录。
-- 日志和服务发现文件在棋局数据目录。`CHESS_COACH_DATA_DIR` 可用于隔离开发和测试。
-
-每个用户的数据目录用系统 `flock` 保证只有一个棋局服务；多个 MCP 会话和页面共享这一服务。服务只监听回环地址，数据接口验证令牌和请求来源。SSE 重连返回完整状态；棋局版本校验拒绝重复或过期操作。
-
-```bash
-npm run stop          # Stop the default service while retaining saves and preferences
-npm run open          # Print the default board URL and current position
-CHESS_COACH_DATA_DIR="$PWD/output/dev-data" npm run stop
-```
-
-修改插件后运行 `npm run build` 和 `npm run install:local`。安装脚本停止旧服务、复制运行文件、使用 plugin-creator 的 cachebuster helper 更新版本，再重新安装；数据库和语言偏好位于运行目录外，不受更新影响。新建 Codex 任务加载更新后的技能和工具。
-
-若引擎失败，已经走出的棋仍被保存；棋盘显示重试按钮。若服务断开，回到 Codex 重新打开棋盘。损坏的数据库会使服务报错，程序不会静默清空它；详细错误见数据目录内的 `service.log`。
-
-## 实现与接口
-
-React / TypeScript / Vite / react-chessboard 构建页面，Node HTTP 与 SSE 提供本机服务，chess.js 校验规则，Stockfish 18 lite single-threaded WASM 通过独立子进程运行。所有资产都包含在构建产物内。
-
-MCP 工具：`show_board`、`get_game`、`new_game`、`make_move`、`undo_turn`、`retry_engine`、`analyze_position`、`export_pgn`。变更操作携带 `gameId` 和 `expectedRevision`。分析的 `ply` 以半步计数，0 表示初始局面，结果包含局面版本、FEN 和合法 SAN 变化线。经过身份验证的 `GET /preferences` 和 `POST /preferences` 独立管理界面语言。
-
-插件是本机版本，未提供对话内嵌 MCP Apps、联网对战、棋盘内模型调用或公开分发流程。
-
-## 标志
-
-原创 [SVG 标志](plugins/chess-coach/assets/logo.svg) 以带有短而直立鬃毛的象牙白马棋子和罗马风格阶梯台座为主体，搭配深绿色底板与古金边框。短鬃毛沿着颈背向外竖起，毛根与颈部连成完整轮廓。简洁形状与克制的建筑细节兼顾古典气质和小尺寸辨识度。标志无需字体或外部图片，可无损缩放。插件在浅色、深色主题和输入框图标中使用同一标志。本机安装脚本将 `plugins/chess-coach/assets/` 复制到安装后的插件目录。
-
-## 第三方组件
-
-运行时依赖许可证汇总见 [第三方声明](THIRD_PARTY_NOTICES.zh-CN.md)。
-
-Stockfish.js 18.0.8 © Chess.com, LLC 及 Stockfish 贡献者，GPL-3.0。构建保留引擎版权头与 `engine/COPYING`，对应源代码见 [Stockfish.js](https://github.com/nmrugg/stockfish.js)。其他依赖的许可证保留在其 npm 包中。
+原创代码、文档及古典风格马棋子图标采用 [Apache License 2.0](LICENSE)，
+署名见 [NOTICE](NOTICE)。[第三方声明](THIRD_PARTY_NOTICES.zh-CN.md) 说明依赖许可。
+Stockfish 18.0.8 保留 GPL-3.0。插件包附带依赖许可证全文和
+[对应源码及构建材料](release/STOCKFISH-SOURCE.zh-CN.md)，
+JS、WASM 与网络文件的固定哈希见 `release/stockfish.json`。

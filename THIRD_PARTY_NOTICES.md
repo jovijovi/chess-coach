@@ -25,3 +25,15 @@ Stockfish.js 18.0.8 is a WASM implementation of Stockfish 18, copyright Chess.co
 The repository tracks source and dependency declarations; `node_modules/`, generated engine binaries, and `dist/` are excluded. Installing and building locally retrieves the engine through the locked npm dependency. The Apache license does not replace the engine's GPLv3 terms. If distributing built engine assets, retain the applicable notices and provide the corresponding source for the exact binaries under the upstream license requirements. See [Stockfish's distribution guidance](https://stockfishchess.org/about/).
 
 The root `LICENSE` and `NOTICE` files state the license and attribution for the project's original work. They do not replace third-party licenses.
+
+## Complete 0.2.0 packages
+
+`npm run package` includes license and notice texts for the locked production
+packages, including transitive dependencies, under `licenses/dependencies/`.
+`sources.json` records their versions and integrity values. The package also
+includes the exact Stockfish source commit archive, its NNUE network, and
+English/Chinese build instructions in `licenses/stockfish/`. Pinned binary,
+source, and network hashes are checked before packaging; the network is compared
+against the distributed WASM's reconstructed memory. See
+[corresponding-source details](release/STOCKFISH-SOURCE.md). Development-tool
+requirements in that guide apply to rebuilding the engine, not running the plugin.

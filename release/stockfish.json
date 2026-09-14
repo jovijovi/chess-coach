@@ -1,0 +1,20 @@
+{
+  "version": "18.0.8",
+  "repository": "https://github.com/nmrugg/stockfish.js",
+  "commit": "93c994592dcf3b4b21052ab925e9b534df9c0918",
+  "emscripten": "3.1.7",
+  "buildCommand": "node build.js --lite --single-threaded --no-split --strict-em-check -f",
+  "npmIntegrity": "sha512-z+f2UMPXLylDBGjv9e9zU8QulY7hUl8MYHesLRrdddewlOXjJrUSmtNmbtID1/F72EPhq0CCkCNxgWS5MQVWtQ==",
+  "jsSha256": "5243fd9b276cab7dfe3ad1d43ab9ead73568fac76468c614242977a210c4a391",
+  "wasmSha256": "a8fbc05ec6920b56d7485826dcb02c5ffd2826bcbf751cf973046f237a9096f1",
+  "source": {
+    "name": "stockfish-source.tar.gz",
+    "url": "https://codeload.github.com/nmrugg/stockfish.js/tar.gz/93c994592dcf3b4b21052ab925e9b534df9c0918",
+    "sha256": "ef9b6e9bd66de9869dc4715979ada23c6ab4fa96648025823a0a865f300667b2"
+  },
+  "network": {
+    "name": "nn-9067e33176e8.nnue",
+    "url": "https://tests.stockfishchess.org/api/nn/nn-9067e33176e8.nnue",
+    "sha256": "9067e33176e8c5edb7aa8db6a3aedd012f84a1f39872e86357c6c2d0993f314d"
+  }
+}

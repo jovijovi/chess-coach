@@ -25,12 +25,13 @@ export default {
     language: "Language",
     repository: "View on GitHub",
     source: "Source repository",
-    sourceNote: "Repository access requires authorization.",
+    sourceNote:
+      "0.2.0 private preview; repository access requires authorization.",
     top: "Back to the beginning",
     license: "Project license",
     thirdParty: "Third-party notices",
     footer: "Made for the quiet pleasure of a considered move.",
-    system: "Linux · Node.js 26+",
+    system: "Linux x64 · macOS · Node.js 26+",
     downloadLogo: "Download the SVG mark",
     note: "Worth remembering",
     code: "Terminal",
@@ -74,30 +75,31 @@ export default {
         {
           type: "callout",
           title: "Before you begin",
-          text: "You need Linux x86_64, Node.js 26+, npm, `/usr/bin/flock`, Codex with its `plugin-creator` system skill, and `/usr/bin/python3` with PyYAML. Use `CHESS_COACH_PYTHON` to select another compatible Python. GitHub access is required to clone the private repository.",
+          text: "Supports Linux x86_64 and macOS Intel/Apple Silicon. Install Node.js 26+ and make node available to Codex; the baseline is Codex CLI 0.154.0. Version 0.2.0 is in private RC testing; the stable channel follows the owner’s public-release decision. Users need no compilation, project dependencies, Python, or flock.",
         },
         {
           type: "steps",
           items: [
             {
-              title: "Get an authorized checkout",
-              text: "Sign in with GitHub CLI, then clone the project.",
-              code: "gh auth login\ngh repo clone jovijovi/chess-coach\ncd chess-coach",
-              after: "Already have a checkout? Start with the next step.",
+              title: "Install the private preview",
+              text: "After RC promotion, authorized testers install the complete bundle through the GitHub marketplace.",
+              code: "gh auth login\ngh auth setup-git\ncodex plugin marketplace add jovijovi/chess-coach --ref marketplace-preview\ncodex plugin add chess-coach@chess-coach-preview",
+              after:
+                "After stable publication, use ref marketplace and plugin ID chess-coach@chess-coach.",
             },
             {
-              title: "Build and install",
-              text: "Prepare the local engine and add Chess Coach to your personal plugin marketplace.",
-              code: "npm ci\nnpm run build\nnpm run install:local -- --dry-run\nnpm run install:local",
+              title: "Upgrade manually",
+              text: "Refresh the preview catalog and reinstall. For stable releases, use the chess-coach catalog name.",
+              code: "codex plugin marketplace upgrade chess-coach-preview\ncodex plugin add chess-coach@chess-coach-preview",
               after:
-                "Dependencies download during setup. The installed board and engine run locally.",
+                "Start a new Codex task after each upgrade. Older caches cannot overwrite a newer runtime.",
             },
             {
               title: "Make your first move",
-              text: "Start a new Codex task and send the prompt below. The plugin starts its local service and opens the board in the in-app browser.",
+              text: "Send the prompt in a new task. The plugin starts its local service and opens the board in the in-app browser.",
               prompt: "Open the chessboard.",
               after:
-                "The default game is White against Medium. No development server or separate OpenAI API key is needed.",
+                "The default is White/Medium. The installed board and engine work offline; model conversation still uses the Codex service.",
             },
           ],
         },
@@ -276,50 +278,62 @@ export default {
       blocks: [
         {
           type: "table",
-          title: "Where things live",
-          headers: ["Location", "Purpose"],
+          title: "Your data stays local",
+          headers: ["Path", "Purpose"],
           rows: [
             [
               "~/.local/share/chess-coach/state.db",
-              "Current game and complete move history",
+              "Current game and complete history",
             ],
             [
               "~/.local/share/chess-coach/preferences.json",
-              "Your chosen UI language",
+              "Language preference",
             ],
+            ["~/.local/share/chess-coach/runtime/", "Verified runtime files"],
             [
-              "~/.local/share/chess-coach/runtime/",
-              "Installed service and engine",
+              "activation-lock.db / service-lock.db",
+              "Separate SQLite process leases",
             ],
-            ["~/plugins/chess-coach/", "Personal plugin source"],
           ],
         },
         {
           type: "code",
-          title: "Service controls",
-          code: "npm run stop\nnpm run open",
-          text: "Stop retains your save and language preference. Open prints the current board URL and position. Reopen the board through Codex after a service restart.",
+          title: "Inspect and stop the service",
+          code: "node ~/.local/share/chess-coach/runtime/control.js doctor\nnode ~/.local/share/chess-coach/runtime/control.js stop",
+          text: "Doctor omits the access token. Stopping retains saves and language; reopen the board through Codex after a restart.",
+        },
+        {
+          type: "code",
+          title: "Migrate once from personal",
+          code: "node ~/.local/share/chess-coach/runtime/control.js stop\ncodex plugin remove chess-coach@personal\ncp -R ~/.local/share/chess-coach/runtime ~/.local/share/chess-coach/runtime-0.1-backup",
+          text: "Close old tasks first. After installing the preview, run node <installed-plugin>/scripts/launch.mjs clean-runtime using the absolute path printed by Codex, then start a new task. Games, preferences, and other personal entries remain. Keep the backup until verified.",
+        },
+        {
+          type: "code",
+          title: "Remove the plugin and runtime",
+          code: "node ~/.local/share/chess-coach/runtime/control.js stop\nnode ~/.local/share/chess-coach/runtime/control.js clean-runtime\ncodex plugin remove chess-coach@chess-coach-preview",
+          text: "Close chess tasks first. Clean-runtime is optional and removes only runtime files, preserving games and language. The stable identifier is chess-coach@chess-coach.",
         },
         {
           type: "faq",
           items: [
             {
-              title: "The engine stopped responding. What now?",
-              text: "Use the board’s retry action or ask Codex to retry the engine. Your move remains saved. If the service disconnected, ask Codex to open the board again; check service.log in the data directory for details.",
+              title: "What if the engine stops responding?",
+              text: "Your move is saved. Use Retry; reopen the board after a disconnection and inspect service.log if necessary.",
             },
             {
-              title: "Will an update erase my game?",
-              text: "No. The database and language preference are outside the runtime directory. Build and reinstall the plugin, then start a new Codex task to load the updated skills and tools.",
+              title: "Will a failed update lose my game?",
+              text: "Updates stage and verify files before switching and health-checking the service. Failure restores previous runtime files without reverting the database. Crashes release locks; interrupted switches recover on the next launch.",
             },
             {
-              title: "Can I keep several games?",
-              text: "This version keeps one game. Export PGN before replacing it. There is no historical game library or online multiplayer.",
+              title: "How do I roll back intentionally?",
+              text: "Close tasks, stop the service, remove the plugin and runtime files, and remove only its catalog registration. Re-add a compatible immutable plugin-vVERSION ref; plugin-v0.2.0-rc.1 uses the preview catalog. Keep the newer database. The 0.2.0 RCs retain the existing save format.",
             },
           ],
         },
         {
           type: "paragraph",
-          text: "Use `CHESS_COACH_DATA_DIR` to isolate development or tests from your saved game. A damaged database produces an error instead of silently starting over.",
+          text: "All platforms use the same data-directory convention. Direct CLI launches support CHESS_COACH_DATA_DIR; if Codex filters inherited variables, set it explicitly in the MCP environment and keep tasks and control commands consistent. A corrupt database produces an error instead of silently resetting.",
         },
       ],
     },
@@ -342,7 +356,11 @@ export default {
             ],
             ["npm run typecheck", "Check TypeScript"],
             ["npm run build", "Bundle the plugin and local engine resources"],
-            ["npm test", "Run Vitest after building the bundles"],
+            [
+              "npm run package",
+              "Complete package, archive, checksums, and provenance",
+            ],
+            ["npm test", "Run Vitest after packaging"],
             ["npm run test:browser", "Check both UI languages in Chromium"],
             ["npm run check", "Run the complete code validation sequence"],
             [
@@ -357,13 +375,13 @@ export default {
         },
         {
           type: "code",
-          title: "Update your local plugin",
-          code: "npm run build\nnpm run install:local",
-          text: "The installer refreshes the stable runtime and uses the supported cachebuster and reinstall flow. Start a new Codex task after updating.",
+          title: "Development installation and releases",
+          code: "npm run install:local -- --dry-run\nnpm run install:local",
+          text: "Development uses chess-coach-local and native Codex installation, without a Python installer. Annotated v0.2.0-rc.N or v0.2.0 tags trigger three-platform checks and a Draft Release; manual promotion advances the release branch. Ordinary main pushes never publish a plugin.",
         },
         {
           type: "paragraph",
-          text: "Original project code, documentation, and artwork use Apache License 2.0. Stockfish remains GPLv3; builds retain its license and copyright notices. Other dependencies keep their own licenses.",
+          text: "Original code, documentation, and artwork use Apache-2.0. Stockfish 18.0.8 retains GPL-3.0; complete packages include dependency licenses, corresponding source, network data, build instructions, and pinned hashes. Incomplete source materials block a release.",
         },
       ],
     },
