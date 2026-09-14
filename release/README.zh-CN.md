@@ -76,3 +76,5 @@ CHESS_COACH_CODEX="$(command -v codex)" node scripts/run-native-acceptance.mjs
 
 Ubuntu 24.04 CI 为 bwrap 的专用副本加载临时 AppArmor 配置，允许其使用用户命名空间，
 原生验收后移除。参见 [Ubuntu 命名空间限制](https://documentation.ubuntu.com/security/security-features/privilege-restriction/apparmor/)。
+
+当前私有预览版：[0.2.0-rc.2 验收记录](ACCEPTANCE.zh-CN.md)。

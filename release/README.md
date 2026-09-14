@@ -90,3 +90,5 @@ activation. Native uninstall leaves games and language preferences on disk.
 Ubuntu 24.04 CI grants user-namespace access to a dedicated copy of bwrap through
 a temporary AppArmor profile, then removes it after native acceptance. See
 [Ubuntu namespace restrictions](https://documentation.ubuntu.com/security/security-features/privilege-restriction/apparmor/).
+
+Current private preview: [0.2.0-rc.2 acceptance record](ACCEPTANCE.md).

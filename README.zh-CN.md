@@ -9,6 +9,8 @@
 
 ## 发行状态与要求
 
+当前私有预览版：[0.2.0-rc.2](https://github.com/jovijovi/chess-coach/releases/tag/v0.2.0-rc.2)。三平台结果与验证范围见[验收记录](release/ACCEPTANCE.zh-CN.md)。
+
 **0.2.0 正在进行私有 RC 内测。** 获得项目所有者确认前，仓库保持私有。
 文档网站公开访问，默认英文。下文稳定版命令在正式版本发布后生效。
 

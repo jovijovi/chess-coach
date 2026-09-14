@@ -66,6 +66,8 @@ for (const name of [
   "README.zh-CN.md",
   "STOCKFISH-SOURCE.md",
   "STOCKFISH-SOURCE.zh-CN.md",
+  "ACCEPTANCE.md",
+  "ACCEPTANCE.zh-CN.md",
 ])
   await cp(join("release", name), join(plugin, "release", name));
 await cp("AGENTS.md", join(plugin, "AGENTS.md"));

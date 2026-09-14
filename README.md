@@ -11,6 +11,8 @@ flipping, automatic saves, and PGN export.
 
 ## Release status and requirements
 
+Latest private preview: [0.2.0-rc.2](https://github.com/jovijovi/chess-coach/releases/tag/v0.2.0-rc.2). See the [acceptance record](release/ACCEPTANCE.md) for three-platform results and verification scope.
+
 **0.2.0 is in private RC testing.** The repository stays private until the owner
 approves public access. The documentation website is public and defaults to
 English. Stable-channel commands below apply after the stable release is promoted.
