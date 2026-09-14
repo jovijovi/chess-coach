@@ -25,8 +25,7 @@ export default {
     language: "Language",
     repository: "View on GitHub",
     source: "Source repository",
-    sourceNote:
-      "0.2.0 private preview; repository access requires authorization.",
+    sourceNote: "Public source repository; the preview channel is available.",
     top: "Back to the beginning",
     license: "Project license",
     thirdParty: "Third-party notices",
@@ -75,22 +74,22 @@ export default {
         {
           type: "callout",
           title: "Before you begin",
-          text: "Supports Linux x86_64 and macOS Intel/Apple Silicon. Install Node.js 26+ and make node available to Codex; the baseline is Codex CLI 0.154.0. Version 0.2.0 is in private RC testing; the stable channel follows the owner’s public-release decision. Users need no compilation, project dependencies, Python, or flock.",
+          text: "Supports Linux x86_64 and macOS Intel/Apple Silicon. Install Node.js 26+ and make node available to Codex; the baseline is Codex CLI 0.154.0. The repository is public. Stable 0.2.0 is being prepared for promotion; the existing preview is available without GitHub authentication. Users need no compilation, project dependencies, Python, or flock.",
         },
         {
           type: "steps",
           items: [
             {
-              title: "Install the private preview",
-              text: "After RC promotion, authorized testers install the complete bundle through the GitHub marketplace.",
-              code: "gh auth login\ngh auth setup-git\ncodex plugin marketplace add jovijovi/chess-coach --ref marketplace-preview\ncodex plugin add chess-coach@chess-coach-preview",
+              title: "Install the stable release",
+              text: "After stable 0.2.0 promotion, install the complete package through the native GitHub marketplace.",
+              code: "codex plugin marketplace add jovijovi/chess-coach --ref marketplace\ncodex plugin add chess-coach@chess-coach",
               after:
-                "After stable publication, use ref marketplace and plugin ID chess-coach@chess-coach.",
+                "The existing preview uses ref marketplace-preview and plugin ID chess-coach@chess-coach-preview. The public repository requires no GitHub authentication.",
             },
             {
               title: "Upgrade manually",
-              text: "Refresh the preview catalog and reinstall. For stable releases, use the chess-coach catalog name.",
-              code: "codex plugin marketplace upgrade chess-coach-preview\ncodex plugin add chess-coach@chess-coach-preview",
+              text: "Refresh the stable catalog and reinstall. For previews, use the chess-coach-preview catalog name.",
+              code: "codex plugin marketplace upgrade chess-coach\ncodex plugin add chess-coach@chess-coach",
               after:
                 "Start a new Codex task after each upgrade. Older caches cannot overwrite a newer runtime.",
             },

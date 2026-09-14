@@ -14,6 +14,11 @@ import { join, resolve } from "node:path";
 import { createHash } from "node:crypto";
 
 const work = await mkdtemp(join(tmpdir(), "chess-native-"));
+const anonymous = process.argv.includes("--github");
+if (anonymous && process.platform !== "linux")
+  throw new Error(
+    "Anonymous GitHub acceptance uses the Linux disposable-profile runner.",
+  );
 const report = resolve(
   process.argv[2] ||
     `output/acceptance-${process.platform}-${process.arch}.json`,
@@ -51,8 +56,17 @@ if (process.env.CHESS_COACH_CODEX) {
 }
 await chmod(codex, 0o755);
 const localReport = join(work, "report.json");
+const inherited = anonymous
+  ? Object.fromEntries(
+      Object.entries(process.env).filter(([key]) =>
+        /^(HOME|USER|LOGNAME|PATH|LANG|LC_ALL|TERM|TMPDIR|SSL_CERT_FILE|SSL_CERT_DIR|NODE_EXTRA_CA_CERTS|HTTPS_PROXY|HTTP_PROXY|ALL_PROXY|NO_PROXY)$/i.test(
+          key,
+        ),
+      ),
+    )
+  : process.env;
 const env = {
-  ...process.env,
+  ...inherited,
   CHESS_COACH_CODEX: codex,
   CHESS_COACH_OFFLINE_ACCEPTANCE: "1",
 };
@@ -60,6 +74,63 @@ try {
   if (process.platform === "linux") {
     const profile = join(work, "profile");
     await mkdir(profile);
+    if (anonymous) {
+      Object.assign(env, {
+        GIT_CONFIG_NOSYSTEM: "1",
+        GIT_CONFIG_GLOBAL: "/dev/null",
+        GIT_TERMINAL_PROMPT: "0",
+        CHESS_COACH_ANONYMOUS_ACCEPTANCE: "1",
+      });
+      const metadata = JSON.parse(
+        await readFile(
+          join(catalog, ".agents/plugins/marketplace.json"),
+          "utf8",
+        ),
+      );
+      const branch =
+        metadata.name === "chess-coach" ? "marketplace" : "marketplace-preview";
+      const prefix = [
+        "--unshare-pid",
+        "--die-with-parent",
+        "--ro-bind",
+        "/",
+        "/",
+        "--dev",
+        "/dev",
+        "--proc",
+        "/proc",
+        "--tmpfs",
+        "/tmp",
+        "--bind",
+        work,
+        work,
+        "--bind",
+        profile,
+        homedir(),
+        "--chdir",
+        work,
+        codex,
+      ];
+      for (const args of [
+        [
+          "plugin",
+          "marketplace",
+          "add",
+          "jovijovi/chess-coach",
+          "--ref",
+          branch,
+        ],
+        ["plugin", "add", `chess-coach@${metadata.name}`],
+        ["plugin", "marketplace", "upgrade", metadata.name],
+        ["plugin", "add", `chess-coach@${metadata.name}`],
+      ])
+        execFileSync(
+          process.env.CHESS_COACH_BWRAP || "bwrap",
+          [...prefix, ...args],
+          { env, stdio: "inherit", timeout: 240000 },
+        );
+      env.CHESS_COACH_PREINSTALLED_MARKETPLACE = "1";
+    }
     execFileSync(
       process.env.CHESS_COACH_BWRAP || "bwrap",
       [

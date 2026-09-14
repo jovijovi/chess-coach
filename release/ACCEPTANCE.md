@@ -1,5 +1,7 @@
 # Chess Coach 0.2.0-rc.2 Acceptance
 
+Historical record from the private RC delivery. The repository is now public; consult the root README for current release availability.
+
 English | [简体中文](ACCEPTANCE.zh-CN.md)
 
 Date: 2026-09-14. Status: **published private preview**. Repository visibility

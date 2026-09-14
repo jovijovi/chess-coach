@@ -11,11 +11,9 @@ flipping, automatic saves, and PGN export.
 
 ## Release status and requirements
 
-Latest private preview: [0.2.0-rc.2](https://github.com/jovijovi/chess-coach/releases/tag/v0.2.0-rc.2). See the [acceptance record](release/ACCEPTANCE.md) for three-platform results and verification scope.
-
-**0.2.0 is in private RC testing.** The repository stays private until the owner
-approves public access. The documentation website is public and defaults to
-English. Stable-channel commands below apply after the stable release is promoted.
+The [GitHub repository](https://github.com/jovijovi/chess-coach) is public.
+**Stable 0.2.0 is being prepared for channel promotion.**
+The [0.2.0-rc.2 preview](https://github.com/jovijovi/chess-coach/releases/tag/v0.2.0-rc.2) remains available; its [acceptance record](release/ACCEPTANCE.md) documents the three-platform results and verification scope. The documentation website defaults to English.
 
 Supported targets: Linux x86_64, macOS Intel, and macOS Apple Silicon. Install
 **Node.js 26+** and make `node` available to Codex. The compatibility baseline is
@@ -29,22 +27,21 @@ Conversation with the Codex model still uses the Codex service and account.
 
 ## Install through Codex
 
-For authorized private testers, after the RC has been promoted:
-
-```bash
-# Authenticate Git for the private repository if necessary.
-gh auth login
-gh auth setup-git
-codex plugin marketplace add jovijovi/chess-coach --ref marketplace-preview
-codex plugin add chess-coach@chess-coach-preview
-```
-
-For the stable release, after publication:
+Stable-channel commands, available once v0.2.0 is promoted:
 
 ```bash
 codex plugin marketplace add jovijovi/chess-coach --ref marketplace
 codex plugin add chess-coach@chess-coach
 ```
+
+For the existing preview channel:
+
+```bash
+codex plugin marketplace add jovijovi/chess-coach --ref marketplace-preview
+codex plugin add chess-coach@chess-coach-preview
+```
+
+GitHub authentication is not required for this public repository.
 
 Start a **new Codex task** and ask “Open the chessboard”, “Continue my saved game”,
 or “Explain my last move”. Codex opens the URL returned by `show_board`. Its
@@ -184,7 +181,7 @@ Generated output, dependencies, and personal data stay out of source commits.
 
 The [release guide](release/README.md) describes annotated source tags, the
 three-platform acceptance matrix, Draft Releases, manual channel promotion,
-immutable refs, and the public-access gate. Main pushes may update
+immutable refs, and anonymous installation checks. Main pushes may update
 [GitHub Pages](.github/workflows/pages.yml), but **never release a plugin version**.
 Human commits/tags use repository-local Git identity; generated release commits
 inherit the annotated tag's publisher. See [AGENTS.md](AGENTS.md) for contributors.
@@ -200,3 +197,8 @@ pinned JS/WASM/network hashes in `release/stockfish.json`.
 
 The Linux CI runner uses a temporary AppArmor profile for its dedicated namespace
 test executable. See the release guide for runner setup.
+
+GitHub Release titles, bodies, and tag annotations are written in English.
+Translated project documentation remains available separately. After stable
+promotion, run `node scripts/run-native-acceptance.mjs output/anonymous-acceptance.json --github`
+on Linux to check public installation without GitHub credentials, followed by offline play.

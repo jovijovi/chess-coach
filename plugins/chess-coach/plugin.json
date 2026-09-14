@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "chess-coach",
-  "version": "0.2.0-rc.2",
+  "version": "0.2.0",
   "description": "Play chess on a local interactive board with Stockfish and get position-aware coaching in Codex.",
   "author": {
     "name": "jovijovi",

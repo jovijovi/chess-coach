@@ -9,10 +9,9 @@
 
 ## 发行状态与要求
 
-当前私有预览版：[0.2.0-rc.2](https://github.com/jovijovi/chess-coach/releases/tag/v0.2.0-rc.2)。三平台结果与验证范围见[验收记录](release/ACCEPTANCE.zh-CN.md)。
-
-**0.2.0 正在进行私有 RC 内测。** 获得项目所有者确认前，仓库保持私有。
-文档网站公开访问，默认英文。下文稳定版命令在正式版本发布后生效。
+[GitHub 仓库](https://github.com/jovijovi/chess-coach)已公开。
+**稳定版 0.2.0 正在准备渠道发布。**
+[0.2.0-rc.2 预览版](https://github.com/jovijovi/chess-coach/releases/tag/v0.2.0-rc.2) 已可安装；其[验收记录](release/ACCEPTANCE.zh-CN.md)说明三平台结果及验证范围。文档网站默认英文。
 
 支持 Linux x86_64、macOS Intel 和 Apple Silicon。请预装 **Node.js 26+**，
 确保 Codex 能找到 `node`；兼容性基线为 **Codex CLI 0.154.0**。
@@ -24,22 +23,21 @@
 
 ## 通过 Codex 安装
 
-私有 RC 发布后，获得仓库访问授权的测试者使用：
-
-```bash
-# Authenticate Git for the private repository if necessary.
-gh auth login
-gh auth setup-git
-codex plugin marketplace add jovijovi/chess-coach --ref marketplace-preview
-codex plugin add chess-coach@chess-coach-preview
-```
-
-正式版本发布后使用：
+稳定版 v0.2.0 完成渠道发布后使用：
 
 ```bash
 codex plugin marketplace add jovijovi/chess-coach --ref marketplace
 codex plugin add chess-coach@chess-coach
 ```
+
+现有预览渠道使用：
+
+```bash
+codex plugin marketplace add jovijovi/chess-coach --ref marketplace-preview
+codex plugin add chess-coach@chess-coach-preview
+```
+
+此公开仓库无需 GitHub 身份认证。
 
 新建 **Codex 任务**，说“打开棋盘”“继续上一局”或“解释上一步”。
 Codex 打开 `show_board` 返回的地址。地址片段携带本地授权令牌，须保持完整，避免写入共享日志。
@@ -160,7 +158,7 @@ Playwright 优先使用已安装的 Chrome，否则使用托管 Chromium；可�
 任何校验失败都会阻止打包。生成物、依赖和个人数据不提交到源码分支。
 
 [发行指南](release/README.zh-CN.md) 说明带注释的标签、三平台验收、Draft Release、
-手动渠道发布、不可变引用和公开访问确认步骤。main 推送可能更新
+手动渠道发布、不可变引用和匿名安装检查。main 推送可能更新
 [GitHub Pages](.github/workflows/pages.yml)，但**不会发布插件版本**。
 人工提交和标签使用仓库本地 Git 身份；流水线生成的提交继承发行标签的发布者身份。
 贡献约定见 [AGENTS.md](AGENTS.md)。
@@ -175,3 +173,7 @@ JS、WASM 与网络文件的固定哈希见 `release/stockfish.json`。
 
 Linux CI runner 使用临时 AppArmor 配置，为专用验收程序启用命名空间。
 runner 配置详见发行指南。
+
+GitHub Release 标题、正文及 Tag 注释统一使用英文；项目文档继续提供中英文版本。
+稳定渠道发布后，可在 Linux 运行 `node scripts/run-native-acceptance.mjs output/anonymous-acceptance.json --github`，
+验证无 GitHub 凭据安装以及安装后的离线对弈。

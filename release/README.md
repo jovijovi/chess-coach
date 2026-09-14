@@ -2,10 +2,10 @@
 
 English | [简体中文](README.zh-CN.md)
 
-Keep the repository private throughout RC preparation and acceptance. Public
-repository access requires the owner's explicit confirmation. Stable promotion
-is blocked while the repository is private; anonymous installation is checked
-only after the public decision. These are separate steps from GitHub Pages.
+The owner has made the repository public. Prepare stable 0.2.0 through the same
+annotated-tag, three-platform-check, draft, and manual-promotion workflow used for
+the RCs. GitHub Release titles, descriptions, and tag annotations must be English.
+Keep English and Chinese user documentation as separate editions.
 
 ## Prepare a candidate
 
@@ -64,15 +64,23 @@ It validates the draft, checks report/build/source identity, and advances only
 its channel: `marketplace-preview` for RCs or `marketplace` for stable versions.
 The generated commit inherits the annotated source tag's name and email.
 The workflow creates an immutable annotated `plugin-vVERSION` reference and
-publishes the Release. Verify private GitHub-marketplace installation from the
-promoted preview before delivering the RC acceptance report. Channel branches contain only generated distribution
+publishes the Release. Verify installation from the promoted GitHub marketplace and record the result. Channel branches contain only generated distribution
 files; do not edit them manually. Stable channels reject prereleases.
 
-The public launch sequence is: private RC + acceptance report → owner confirms
-repository visibility → stable `v0.2.0` checks/draft → manual stable promotion →
-anonymous GitHub marketplace installation. Public access is not implied by
-completing RC tests. Maintain a record of any unavailable platform or manual
-check; do not label an unexecuted check as passed.
+The public-access decision and private RC checks are complete. Stable publication
+now requires the v0.2.0 tag checks and manual promotion, followed by anonymous
+installation using the public GitHub marketplace:
+
+```bash
+node scripts/run-native-acceptance.mjs output/anonymous-acceptance.json --github
+```
+
+On Linux this uses a fresh filesystem-isolated Codex profile, omits account tokens
+and SSH/askpass credentials, disables system/global Git credential helpers, installs
+and refreshes the public catalog, then blocks external networking for the native
+ten-round test. Reports identify anonymous GitHub acceptance explicitly.
+Record unexecuted manual checks accurately; automated engine/position checks do not
+grade generated model explanations.
 
 ## Upgrade, rollback, and migration
 
@@ -91,4 +99,4 @@ Ubuntu 24.04 CI grants user-namespace access to a dedicated copy of bwrap throug
 a temporary AppArmor profile, then removes it after native acceptance. See
 [Ubuntu namespace restrictions](https://documentation.ubuntu.com/security/security-features/privilege-restriction/apparmor/).
 
-Current private preview: [0.2.0-rc.2 acceptance record](ACCEPTANCE.md).
+Historical RC evidence: [0.2.0-rc.2 acceptance record](ACCEPTANCE.md).

@@ -2,7 +2,7 @@
 
 [English](README.md) | 简体中文
 
-这里是 Chess Coach 的双语静态使用手册，托管于 GitHub Pages：[英文（默认）](https://jovijovi.github.io/chess-coach/) 和 [简体中文](https://jovijovi.github.io/chess-coach/zh-CN/)。文档网站公开访问，源代码仓库保持私有。
+这里是 Chess Coach 的双语静态使用手册，托管于 GitHub Pages：[英文（默认）](https://jovijovi.github.io/chess-coach/) 和 [简体中文](https://jovijovi.github.io/chess-coach/zh-CN/)。文档网站公开访问，源代码仓库也已公开。
 
 ## 构建与预览
 
@@ -37,12 +37,12 @@ npm run docs:preview
 
 构建使用 Node.js 26。生成器只使用 Node.js 内置模块和本地文件，因此无需安装依赖。官方 Actions 固定到具体提交；构建任务上传 `output/docs/`，独立部署任务使用 Pages 与 OIDC 权限，通过 `github-pages` 环境完成发布。本地预览命令不会触发部署。
 
-源代码仓库应保持私有，发布后的静态手册可以公开访问。官方部署机制见 [GitHub Pages 自定义工作流指南](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)。
+源代码仓库与发布后的静态手册均公开访问。官方部署机制见 [GitHub Pages 自定义工作流指南](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)。
 
 ## 插件发行内容
 
-区分私有 RC 与未来稳定版的安装命令。手册的两种语言都应说明原生 marketplace
+区分预览版与稳定版的安装命令。手册的两种语言都应说明原生 marketplace
 安装、手动升级、personal 迁移、保留数据的卸载和不可变引用回退。
 插件发行独立于 Pages：带注释的标签准备 Draft，手动发布才更新渠道。
-详见[发行指南](../release/README.zh-CN.md)。即使公开文档介绍了这些命令，
-仓库是否公开仍须由所有者单独决定。
+详见[发行指南](../release/README.zh-CN.md)。仓库已由所有者公开。Release 标题、正文和 Tag 注释使用英文，
+手册内容继续维护两种语言。

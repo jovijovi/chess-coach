@@ -12,6 +12,23 @@ import { Chess } from "chess.js";
 const codex = process.env.CHESS_COACH_CODEX || "codex";
 const marketplace = resolve(process.argv[2] || "output/release/marketplace");
 const reportPath = resolve(process.argv[3] || "output/native-acceptance.json");
+const preinstalled = process.env.CHESS_COACH_PREINSTALLED_MARKETPLACE === "1";
+const anonymous = process.env.CHESS_COACH_ANONYMOUS_ACCEPTANCE === "1";
+if (anonymous) {
+  for (const key of [
+    "GH_TOKEN",
+    "GITHUB_TOKEN",
+    "GH_ENTERPRISE_TOKEN",
+    "GITHUB_ENTERPRISE_TOKEN",
+    "SSH_AUTH_SOCK",
+    "GIT_ASKPASS",
+  ])
+    assert.equal(
+      process.env[key],
+      undefined,
+      `Anonymous acceptance must omit ${key}`,
+    );
+}
 const installed = JSON.parse(
   execFileSync(codex, ["plugin", "marketplace", "list", "--json"], {
     encoding: "utf8",
@@ -19,8 +36,8 @@ const installed = JSON.parse(
 );
 assert.equal(
   installed.marketplaces.length,
-  0,
-  "Native acceptance requires an empty disposable Codex profile.",
+  preinstalled ? 1 : 0,
+  "Native acceptance requires its dedicated disposable Codex profile.",
 );
 const codexVersion = execFileSync(codex, ["--version"], {
   encoding: "utf8",
@@ -61,7 +78,7 @@ assert.equal(
 const workspace = await mkdtemp(join(tmpdir(), "chess native 验收 "));
 const env = { ...process.env, CHESS_COACH_DATA_DIR: directory };
 const cli = (args) => execFileSync(codex, args, { env, encoding: "utf8" });
-cli(["plugin", "marketplace", "add", marketplace]);
+if (!preinstalled) cli(["plugin", "marketplace", "add", marketplace]);
 cli(["plugin", "add", pluginId]);
 let proc,
   stderr = "",
@@ -274,6 +291,7 @@ try {
   assert.equal(undone.moves.length, 18);
   const report = {
     passed: true,
+    anonymousGitHub: anonymous,
     offline,
     codex: codexVersion,
     node: process.version,

@@ -3,6 +3,7 @@ import { readFile, mkdir, writeFile, cp, mkdtemp } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import { createHash } from "node:crypto";
+import { releaseNotes } from "./lib/release-notes.mjs";
 const tag = process.argv[2];
 const gh = (args) => execFileSync("gh", args, { encoding: "utf8" }).trim();
 const git = (args, options = {}) =>
@@ -63,6 +64,8 @@ for (const line of (await readFile(join(directory, "SHA256SUMS"), "utf8"))
 const sources = JSON.parse(
   await readFile(join(directory, "sources.json"), "utf8"),
 );
+const notesPath = join(directory, "published-notes.md");
+await writeFile(notesPath, releaseNotes(sources));
 if (
   sources.version !== metadata.version ||
   sources.sourceCommit !== metadata.sourceCommit ||
@@ -134,6 +137,8 @@ if (refs.includes(`refs/tags/${metadata.immutableRef}`)) {
     "--repo",
     repo,
     "--draft=false",
+    "--notes-file",
+    notesPath,
     ...(metadata.channel === "marketplace-preview"
       ? ["--prerelease"]
       : ["--latest"]),
@@ -199,6 +204,8 @@ gh([
   "--repo",
   repo,
   "--draft=false",
+  "--notes-file",
+  notesPath,
   ...(metadata.channel === "marketplace-preview"
     ? ["--prerelease"]
     : ["--latest"]),

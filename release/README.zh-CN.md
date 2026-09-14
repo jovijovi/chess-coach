@@ -2,9 +2,9 @@
 
 [English](README.md) | 简体中文
 
-RC 准备和验收期间保持仓库私有；公开仓库必须获得所有者明确确认。
-仓库私有时，稳定渠道发布会被阻止；公开后的匿名安装另行验收。
-这些步骤独立于 GitHub Pages。
+所有者已将仓库公开。稳定版 0.2.0 沿用 RC 的带注释标签、三平台检查、
+Draft Release 和手动渠道发布流程。GitHub Release 标题、正文及 Tag 注释必须使用英文；
+用户文档继续分别维护英文和中文版本。
 
 ## 准备候选版本
 
@@ -56,13 +56,20 @@ CHESS_COACH_CODEX="$(command -v codex)" node scripts/run-native-acceptance.mjs
 它检查 Draft、报告与构建/源码的一致性，仅更新对应渠道：RC 为
 `marketplace-preview`，稳定版为 `marketplace`。
 生成提交沿用源码标签的发布者姓名和邮箱，创建不可变的带注释
-`plugin-vVERSION` 引用并发布 Release，再从已发布的预览目录验证私有 GitHub marketplace 安装，
-然后交付 RC 验收报告。渠道分支只存放生成的发行内容，不手工修改。
+`plugin-vVERSION` 引用并发布 Release，再从已发布的 GitHub marketplace 验证安装并记录结果。渠道分支只存放生成的发行内容，不手工修改。
 稳定渠道拒绝预发布版本。
 
-公开顺序为：私有 RC 和验收报告 → 所有者确认公开仓库 → 稳定版 `v0.2.0`
-检查及 Draft → 手动发布稳定渠道 → 匿名 GitHub marketplace 安装验证。
-完成 RC 测试不代表获得公开授权。明确记录无法执行的平台或人工检查，不能将未执行项目标为通过。
+公开决定和私有 RC 检查已经完成。接下来执行 v0.2.0 标签检查、手动渠道发布，
+然后通过公开 GitHub marketplace 验证匿名安装：
+
+```bash
+node scripts/run-native-acceptance.mjs output/anonymous-acceptance.json --github
+```
+
+此 Linux 检查使用文件系统隔离的新 Codex 用户目录，移除账户令牌、SSH 与 askpass
+凭据，并禁用系统和全局 Git 凭据配置。安装并刷新公开目录后，阻断外网进行原生
+十回合验收。报告显式记录匿名 GitHub 验证。准确注明未执行的人工检查；
+引擎和局面自动化检查不评价模型自然语言讲解的质量。
 
 ## 升级、回退与迁移
 
@@ -77,4 +84,4 @@ CHESS_COACH_CODEX="$(command -v codex)" node scripts/run-native-acceptance.mjs
 Ubuntu 24.04 CI 为 bwrap 的专用副本加载临时 AppArmor 配置，允许其使用用户命名空间，
 原生验收后移除。参见 [Ubuntu 命名空间限制](https://documentation.ubuntu.com/security/security-features/privilege-restriction/apparmor/)。
 
-当前私有预览版：[0.2.0-rc.2 验收记录](ACCEPTANCE.zh-CN.md)。
+历史 RC 证据：[0.2.0-rc.2 验收记录](ACCEPTANCE.zh-CN.md)。

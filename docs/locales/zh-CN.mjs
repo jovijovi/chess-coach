@@ -25,7 +25,7 @@ export default {
     language: "语言",
     repository: "在 GitHub 查看",
     source: "源代码仓库",
-    sourceNote: "0.2.0 私有内测；访问仓库需要授权。",
+    sourceNote: "公开源码仓库 · 预览渠道现已可用。",
     top: "回到开篇",
     license: "项目许可证",
     thirdParty: "第三方声明",
@@ -73,22 +73,22 @@ export default {
         {
           type: "callout",
           title: "安装前准备",
-          text: "支持 Linux x86_64、macOS Intel 和 Apple Silicon。预装 Node.js 26+ 并确保 Codex 能找到 node；兼容性基线为 Codex CLI 0.154.0。0.2.0 正在私有 RC 内测，正式渠道须在所有者确认公开后发布。用户无需编译、项目依赖、Python 或 flock。",
+          text: "支持 Linux x86_64、macOS Intel 和 Apple Silicon。预装 Node.js 26+ 并确保 Codex 能找到 node；兼容性基线为 Codex CLI 0.154.0。仓库已公开，稳定版 0.2.0 正在准备渠道发布，现有预览版可匿名安装。用户无需编译、项目依赖、Python 或 flock。",
         },
         {
           type: "steps",
           items: [
             {
-              title: "安装私有预览版",
-              text: "RC 发布后，获得访问授权的测试者通过 GitHub marketplace 安装完整插件包。",
-              code: "gh auth login\ngh auth setup-git\ncodex plugin marketplace add jovijovi/chess-coach --ref marketplace-preview\ncodex plugin add chess-coach@chess-coach-preview",
+              title: "安装稳定版",
+              text: "稳定版 0.2.0 完成渠道发布后，使用原生 GitHub marketplace 安装完整包。",
+              code: "codex plugin marketplace add jovijovi/chess-coach --ref marketplace\ncodex plugin add chess-coach@chess-coach",
               after:
-                "正式版发布后，将 ref 改为 marketplace，插件标识改为 chess-coach@chess-coach。",
+                "当前预览版使用 ref marketplace-preview 和插件标识 chess-coach@chess-coach-preview。公开仓库无需 GitHub 认证。",
             },
             {
               title: "手动升级",
-              text: "刷新预览目录后重新安装。稳定版使用 chess-coach 目录名称。",
-              code: "codex plugin marketplace upgrade chess-coach-preview\ncodex plugin add chess-coach@chess-coach-preview",
+              text: "刷新稳定目录并重新安装；预览版将目录名称改为 chess-coach-preview。",
+              code: "codex plugin marketplace upgrade chess-coach\ncodex plugin add chess-coach@chess-coach",
               after:
                 "每次升级后新建 Codex 任务。旧缓存不会覆盖较新的运行版本。",
             },

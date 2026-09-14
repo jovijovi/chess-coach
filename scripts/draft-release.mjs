@@ -1,6 +1,7 @@
 import { readFile, writeFile, appendFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
+import { releaseNotes } from "./lib/release-notes.mjs";
 const tag = process.argv[2];
 if (!/^v0\.2\.0(?:-rc\.[1-9]\d*)?$/.test(tag ?? ""))
   throw new Error("Invalid release tag");
@@ -36,7 +37,7 @@ for (const target of ["linux-x64", "darwin-x64", "darwin-arm64"]) {
 }
 await writeFile(
   "output/release-notes.md",
-  `Chess Coach ${sources.version}\n\nSource commit: ${sources.sourceCommit}\nBuild: ${sources.buildId}\n\nNative Codex 0.154.0 acceptance passed on Linux x64, macOS x64 and macOS arm64: eight tools, ten rounds, offline local engine, analysis, restart and PGN replay. See attached reports.\n\nThis draft does not advance the marketplace. Run the manual publish workflow after reviewing the artifacts.\n`,
+  releaseNotes(sources, { draft: true }),
 );
 execFileSync(
   "gh",
