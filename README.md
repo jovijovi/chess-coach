@@ -18,6 +18,21 @@ gh repo clone jovijovi/chess-coach
 cd chess-coach
 ```
 
+## Documentation website
+
+Read the [English handbook](https://jovijovi.github.io/chess-coach/) or the [Simplified Chinese edition](https://jovijovi.github.io/chess-coach/zh-CN/). English is the default language.
+
+The bilingual handbook in `docs/` uses an ivory, forest-green, and antique-gold design with the project's knight mark. It includes chapter navigation, local full-text search, copyable commands and prompts, responsive layouts, and a complete MCP tool reference.
+
+```bash
+npm run docs:build    # Generate the static site in output/docs
+npm run docs:preview  # Rebuild and preview at http://127.0.0.1:4174
+```
+
+Open `/` for English or `/zh-CN/` for Simplified Chinese. Language links preserve the current chapter. The preview rebuilds on startup; after editing, run `npm run docs:build` and refresh. All assets are local, and the documentation does not access your game service. See the [site maintenance guide](docs/README.md).
+
+The [Pages workflow](.github/workflows/pages.yml) builds and publishes `output/docs/` after relevant changes reach `main`, and also supports manual runs from GitHub Actions. The site uses relative paths and `.nojekyll` under `/chess-coach/`. The documentation website is public; the source repository remains private. See the [site maintenance guide](docs/README.md) for deployment details.
+
 ## Local installation
 
 Requirements: Linux x86_64, Node.js 26+, npm, `/usr/bin/flock`, and Codex's installed `plugin-creator` system skill. The installer uses `/usr/bin/python3` with PyYAML; override it with `CHESS_COACH_PYTHON` if necessary.

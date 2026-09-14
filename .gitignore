@@ -3,6 +3,7 @@ plugins/chess-coach/dist/
 output/
 test-results/
 playwright-report/
+.playwright-cli/
 *.tsbuildinfo
 .codegraph/
 

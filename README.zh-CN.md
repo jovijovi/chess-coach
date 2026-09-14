@@ -18,6 +18,21 @@ gh repo clone jovijovi/chess-coach
 cd chess-coach
 ```
 
+## 文档网站
+
+在线阅读 [英文手册](https://jovijovi.github.io/chess-coach/) 或 [简体中文手册](https://jovijovi.github.io/chess-coach/zh-CN/)。网站默认语言为英文。
+
+`docs/` 中的双语手册采用象牙白、深绿与古金色，搭配项目的马棋子标志。页面提供章节目录、本地全文搜索、命令和提示词复制、响应式布局，以及完整的 MCP 工具指南。
+
+```bash
+npm run docs:build    # Generate the static site in output/docs
+npm run docs:preview  # Rebuild and preview at http://127.0.0.1:4174
+```
+
+英文入口为 `/`，简体中文入口为 `/zh-CN/`；语言切换会保留当前章节。预览命令在启动时重新构建，编辑后运行 `npm run docs:build` 并刷新即可。所有页面资源都来自本地，文档不会访问你的棋局服务。维护方式见 [站点维护指南](docs/README.zh-CN.md)。
+
+[Pages 工作流](.github/workflows/pages.yml) 在相关变更推送到 `main` 后构建并发布 `output/docs/`，也支持从 GitHub Actions 手动运行。网站在 `/chess-coach/` 下使用相对路径和 `.nojekyll`。文档网站公开访问，源代码仓库保持私有。部署细节见 [站点维护指南](docs/README.zh-CN.md)。
+
 ## 本机安装
 
 目标环境：Linux x86_64、Node.js 26、npm、`/usr/bin/flock`，以及已安装 Codex 的 `plugin-creator` 系统技能。安装脚本默认使用带 PyYAML 的 `/usr/bin/python3`；其他解释器可通过 `CHESS_COACH_PYTHON` 指定。
